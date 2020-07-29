@@ -1,0 +1,1 @@
+INSERT INTO `arbitro` (`id`, `apellidos`, `delegacion`, `dni`, `email`, `fecha_nacimiento`, `licencia`, `localidad`, `movil`, `nombre`, `numero_licencia`, `provincia`) VALUES ('1', 'Gomez', 'Sevilla', '12345678X', 'email@email.com', '2020-07-21 00:00:00', 'Nacional', 'Huelva', '654987321', 'Francisco', '32144', 'Huelva');

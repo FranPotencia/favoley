@@ -1,0 +1,22 @@
+.activeVerde{
+	background-color: #44a642;
+	border-color:#44a642;
+}
+
+.verde{
+	background-color: #008000;
+	border-color:#008000;
+}
+
+.fontWhite{
+	color:white !important;
+}
+
+.pointer{
+	cursor:pointer;
+}
+
+.navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:focus, .navbar-inverse .navbar-nav>.open>a:hover {
+    color: white;
+    background-color: #44a642;
+}
