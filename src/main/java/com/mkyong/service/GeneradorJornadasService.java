@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.mkyong.model.EquipoConfirmado;
 import com.mkyong.model.Jornada;
 import com.mkyong.model.Partido;
+import com.mkyong.repository.JornadaDAO;
 
 @Service
 public class GeneradorJornadasService {
@@ -18,82 +19,138 @@ public class GeneradorJornadasService {
 	
 	@Autowired
 	private JornadaService jornadaService;
+	
+	@Autowired
+	private JornadaDAO jornadaDAO;
 
+	
+	private int[] equipos;
+	private String[][] matriz1,matriz2,jornadas,jornadas2;
+	
+	//Num de jornadas = (N-1)*2, con N = num equipos. (N-1) es una vuelta.
+	
 	public void generador() {
 
 		jornadaService.deleteAll();
-		List<EquipoConfirmado> list = equipoConfirmadoService.getAllEquipos();
 
-		List<Jornada> listaJornadas = new ArrayList<Jornada>();
-		Integer numeroJornadas = (list.size() - 1) * 2;
-		Integer numeroEquipos = list.size() / 2;
-		for (int i = 0; i < numeroJornadas; i++) {
-			Jornada jornada = new Jornada();
-			jornada.setNumeroJornada(i + 1);
-			List<Partido> listaPartidos = new ArrayList<Partido>();
-			for (int j = 0; j < numeroEquipos; j++) {
-				Partido partido = new Partido();
-
-				String equipoLocal = list.get((i + j) % (list.size() - 1)).getNombreEquipo();
-				String equipoVisitante = list.get((list.size() - 1 - j + i) % (list.size() - 1)).getNombreEquipo();
-
-				// Last team stays in the same place while the others rotate around it.
-				if (i == 0) {
-					equipoVisitante = list.get(list.size() - 1).getNombreEquipo();
+		List<EquipoConfirmado> equipos = equipoConfirmadoService.getAllEquipos();
+		int N=equipos.size();
+		if(N%2!=0) {
+			EquipoConfirmado equipoDescansa=new EquipoConfirmado();
+			equipoDescansa.setNombreEquipo("Descansa");
+			equipos.add(equipoDescansa);
+			N++;
+		}
+		matriz1 = new String[N-1][N/2];
+		matriz2 = new String[N-1][N/2];
+		jornadas = new String[N-1][N/2]; //primera vuelta
+		jornadas2 = new String[N-1][N/2]; //segunda vuelta
+		
+		//Relleno las matrices
+		/*   Matriz 1    	 Matriz 2			 
+			1   2   3		6   5   4
+			4   5   1		6   3   2
+			2   3   4		6   1   5
+			5   1   2		6   4   3
+			3   4   5		6   2   1
+			
+			Resultado:
+			
+			J1	6vs1	2vs5	3vs4
+			J2	4vs6	5vs3	1vs2
+			J3	6vs2	3vs1	4vs5
+			J4	5vs6	1vs4	2vs3
+			J5	6vs3	4vs2	5vs1
+		 */
+		
+		int cont = 0;
+		int cont2 = N-2;
+		
+		for(int i=0;i<N-1;i++){
+			for(int j=0;j<N/2;j++){
+				//matriz1
+				matriz1[i][j] = String.valueOf(equipos.get(cont).getNombreEquipo());
+				cont++;
+				if(cont==(N-1)) cont=0;
+				
+				//matriz2
+				if(j==0) matriz2[i][j] = String.valueOf(equipos.get(N-1).getNombreEquipo());
+				else {
+					matriz2[i][j] = String.valueOf(equipos.get(cont2).getNombreEquipo());
+					cont2--;
+					if(cont2==-1) cont2 = N-2;
 				}
-
-				// from rounds half interchange the position of teams in rounds, to get both
-				// home and away matches
-				String mixedRounds;
-				if (i < (list.size() - 1)) {
-					partido.setEquipoLocal(equipoLocal);
-					partido.setEquipoVisitante(equipoVisitante);
-					// mixedRounds = ( game.teamHome + " vs " + game.teamAway );
-				} else {
-					partido.setEquipoLocal(equipoVisitante);
-					partido.setEquipoVisitante(equipoLocal);
-					// mixedRounds = (game.teamAway + " vs " + game.teamHome);
+				
+				//Elaboro la matriz final de enfrentamientos por jornada (primera vuelta)
+				if(j==0){
+					if(i%2==0) jornadas[i][j] = matriz2[i][j] + "-" + matriz1[i][j] + " ";
+					else jornadas[i][j] = matriz1[i][j] + "-" + matriz2[i][j] + " ";
 				}
+				else jornadas[i][j] = matriz1[i][j] + "-" + matriz2[i][j] + " ";
+				
+				
+				//segunda vuelta - al reves que la primera
+				if(j==0){
+					if(i%2==0) jornadas2[i][j] = matriz1[i][j] + "-" + matriz2[i][j] + " ";
+					else jornadas2[i][j] = matriz2[i][j] + "-" + matriz1[i][j] + " ";
+				}
+				else jornadas2[i][j] = matriz2[i][j] + "-" + matriz1[i][j] + " ";
+				
+			}
+		}
+		
+		//Solo para mostrarlo por consola
 
+		List<Jornada> listaJornadas=new ArrayList<Jornada>();
+		Long numeroPartido=1L;
+		int jorn = 1;
+		for(int i=0;i<N-1;i++){
+			Jornada jornada=new Jornada();
+			List<Partido> listaPartidos=new ArrayList<Partido>();
+			for(int j=0;j<N/2;j++){
+				jornada.setNumeroJornada(jorn);
+				String[] nombreEquipos=jornadas[i][j].split("-");
+				Partido partido=new Partido();
+				partido.setEquipoLocal(nombreEquipos[0]);
+				partido.setEquipoVisitante(nombreEquipos[1]);
+				partido.setNumeroPartido(numeroPartido);
+				numeroPartido++;
 				listaPartidos.add(partido);
+//				partido.setJornada(jornada);
 			}
 			jornada.setPartidos(listaPartidos);
 			listaJornadas.add(jornada);
-		}
-
-		for (Jornada jornada2 : listaJornadas) {
-			jornadaService.guardarJornada(jornada2);
+			jorn++;
 		}
 		
-//		this.rounds = new String[(list.size() - 1) * 2][(list.size() / 2)];
-//
-//		for (int round = 0; round < (list.size() - 1) * 2; round++) {
-//			for (int match = 0; match < (list.size() / 2); match++) {
-//				Game game = new Game();
-//
-//				game.teamHome = list.get((round + match) % (list.size() - 1));
-//				game.teamAway = list.get((list.size() - 1 - match + round) % (list.size() - 1));
-//
-//				// Last team stays in the same place while the others rotate around it.
-//				if (match == 0) {
-//					game.teamAway = list.get(list.size() - 1);
-//				}
-//
-//				// from rounds half interchange the position of teams in rounds, to get both
-//				// home and away matches
-//				String mixedRounds;
-//				if (round < (list.size() - 1)) {
-//					mixedRounds = (game.teamHome + " vs " + game.teamAway);
-//				} else
-//				// interchange the place of teams from half ((teamList.size() - 1)
-//				{
-//					mixedRounds = (game.teamAway + " vs " + game.teamHome);
-//				}
-//
-//				rounds[round][match] = mixedRounds;
-//			}
-//		}
-//		return rounds;
+		jorn = N;
+		for(int i=0;i<N-1;i++){
+			Jornada jornada=new Jornada();
+			List<Partido> listaPartidos=new ArrayList<Partido>();
+			for(int j=0;j<N/2;j++){
+				jornada.setNumeroJornada(jorn);
+				String[] nombreEquipos=jornadas2[i][j].split("-");
+				Partido partido=new Partido();
+				partido.setEquipoLocal(nombreEquipos[0]);
+				partido.setEquipoVisitante(nombreEquipos[1]);
+				partido.setNumeroPartido(numeroPartido);
+				numeroPartido++;
+				listaPartidos.add(partido);
+//				partido.setJornada(jornada);
+			}
+			jornada.setPartidos(listaPartidos);
+			listaJornadas.add(jornada);
+			jorn++;
+		}
+		
+		for (Jornada jornada : listaJornadas) {
+			jornadaService.guardarJornada(jornada);
+		}
+		
 	}
 
+	public List<Jornada> getAllJorndas(){
+		return jornadaDAO.findAll();
+	}
+	
 }

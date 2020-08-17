@@ -52,6 +52,20 @@ public class PublicRestController {
 		}
 	}
 	
+	@RequestMapping(value = "/getJornadas", method = RequestMethod.GET)
+	public ResponseEntity<List<Jornada>> getJornadas() {
+
+		List<Jornada> listaJornada = new ArrayList<Jornada>();
+		try {
+			listaJornada = generadorJornadasService.getAllJorndas();
+			return new ResponseEntity<List<Jornada>>(listaJornada, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<List<Jornada>>(listaJornada, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	
+	
 	@RequestMapping(value = "/guardarEquipo", method = RequestMethod.POST)
 	public ResponseEntity addEquipo(@Valid @RequestBody Equipo equipo) {
 		try {

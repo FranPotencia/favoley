@@ -25,8 +25,12 @@ public class Partido {
 	@Column(name = "ID")
 	private Long id;
 
+	@Column(name = "NUMERO_PARTIDO")
+	private Long numeroPartido;
+
 	@Column(name = "EQUIPO_LOCAL")
 	private String equipoLocal;
+
 	@Column(name = "EQUIPO_VISITANTE")
 	private String equipoVisitante;
 
@@ -34,29 +38,23 @@ public class Partido {
 	@DateTimeFormat(pattern = "dd/mm/yyyy")
 	private Date fechaPartido;
 
-	// Provisional
 	@Column(name = "RESULTADO")
 	private String resultado;
-	// Provisional
-	// @Column(name = "SET1")
-	// private String set1;
-	// //Provisional
-	// @Column(name = "SET2")
-	// private String set2;
-	// //Provisional
-	// @Column(name = "SET3")
-	// private String set3;
-	// //Provisional
-	// @Column(name = "SET4")
-	// private String set4;
-	// //Provisional
-	// @Column(name = "SET4")
-	// private String set5;
+	
+	@Column(name = "SET1")
+	private String set1;
 
-	// @Column(name = "SETS_LOCAL")
-	// private Long setsLocal;
-	// @Column(name = "SETS_VISITANTE")
-	// private Long setsVisitante;
+	@Column(name = "SET2")
+	private String set2;
+
+	@Column(name = "SET3")
+	private String set3;
+
+	@Column(name = "SET4")
+	private String set4;
+
+	@Column(name = "SET5")
+	private String set5;
 
 	@Transient
 	private String fechaPartidoFormateada;
@@ -72,6 +70,14 @@ public class Partido {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Long getNumeroPartido() {
+		return numeroPartido;
+	}
+
+	public void setNumeroPartido(Long numeroPartido) {
+		this.numeroPartido = numeroPartido;
 	}
 
 	public String getEquipoLocal() {

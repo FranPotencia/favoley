@@ -9,150 +9,49 @@
 </head>
 <body>
 	<jsp:include page="complementos/header.jsp"></jsp:include>
-	 <!-- id equipo nos hará falta posteriormente -->
-	<input type="hidden" id="idEquipo" value="${idEquipo}" >
-	<input type="hidden" id="token" value="${token}" >
+	<!-- id equipo nos hará falta posteriormente -->
+	<input type="hidden" id="idEquipo" value="${idEquipo}">
+	<input type="hidden" id="token" value="${token}">
 	<div class="container">
 		<h1>Primera División Andaluza</h1>
 		<hr>
-	</div>
-
-		
-		<br>
-	<div class="container">
-		<h2>Jornada 1</h2>
-		<div class="row form-group ">
-			<div class="col-xs-12">
-				<table id="tablaJornada" class="table" >
-					<thead>
-						<tr>
-							<th>Nº Partido</th>
-							<th>Local</th>
-							<th>Visitante</th>
-							<th>Resultado</th>
-							<th>1º Set</th>
-							<th>2º Set</th>
-							<th>3º Set</th>
-							<th>4º Set</th>
-							<th>5º Set</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-						    <td>1</td>
-						    <td>Aguas de Huelva</td>
-						    <td>C.V.Utrera</td>
-						    <td>3-0</td>
-						    <td>25/20</td>
-						    <td>25/23</td>
-						    <td>25/17</td>
-						    <td></td>
-						    <td></td>
-					   </tr>
-					   <tr>
-						    <td>2</td>
-						    <td>C.V.Local</td>
-						    <td>Visitante Volley</td>
-						    <td>3-0</td>
-						    <td>25/20</td>
-						    <td>25/23</td>
-						    <td>25/17</td>
-						    <td></td>
-						    <td></td>
-					   </tr>
-					    <tr>
-						    <td>3</td>
-						    <td>Adesa 80</td>
-						    <td>Rochelambert</td>
-						    <td>3-0</td>
-						    <td>25/20</td>
-						    <td>25/23</td>
-						    <td>25/17</td>
-						    <td></td>
-						    <td></td>
-					   </tr>
-					    <tr>
-						    <td>4</td>
-						    <td>Mairena Vóley</td>
-						    <td>Cajasol</td>
-						    <td>3-0</td>
-						    <td>25/20</td>
-						    <td>25/23</td>
-						    <td>25/17</td>
-						    <td></td>
-						    <td></td>
-					   </tr>
-					</tbody>
-
-				</table>
+		<div class="row form-group">
+			<div class="col-xs-9" style="width: 83%;"></div>
+			<div class="col-xs-2" style="width: 8.666667%;">
+				<label style="margin-top: 5px;">Nº jornada</label>
 			</div>
-		</div>
-		<div class="row form-group ">
-		<h2>Clasificación</h2>
-			<div class="col-xs-12">
-				<table id="tablaJornada" class="table">
+			<div class="col-xs-1">
+				<select class="form-control" id="listaJornadas">
+				</select>
+			</div>
+			<div id="divTablaJornada" class="col-xs-12"></div>
+			<div id="divTablaClasificacion" class="col-xs-12">
+				<table id="tablaClasificacion" class="table">
 					<thead>
 						<tr>
-							<th>Puesto</th>
+							<th>Posición</th>
 							<th>Equipo</th>
 							<th>PJ</th>
 							<th>PG</th>
 							<th>PP</th>
-							<th>NP</th>
-							<th>SF</th>
-							<th>SC</th>
 							<th>TF</th>
 							<th>TC</th>
-							<th>G3</th>
-							<th>G2</th>
-							<th>P1</th>
-							<th>P0</th>
 							<th>Puntos</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-						    <td>1</td>
-						    <td>C.V.Local</td>
-						    <th>4</th>
-							<th>3</th>
-							<th>1</th>
-							<th>4</th>
-							<th>2</th>
-							<th>2</th>
-							<th>1</th>
-							<th>1</th>
-							<th>3</th>
-							<th>4</th>
-							<th>1</th>
-							<th>0</th>
-							<th>6</th>
-					   </tr>
-					   <tr>
-						    <td>2</td>
-						    <td>Aguas de Huelva</td>
-						    <th>4</th>
-							<th>2</th>
-							<th>2</th>
-							<th>1</th>
-							<th>5</th>
-							<th>3</th>
-							<th>2</th>
-							<th>2</th>
-							<th>1</th>
-							<th>4</th>
-							<th>1</th>
-							<th>4</th>
-							<th>4</th>
-					   </tr>
 					</tbody>
-
 				</table>
+
 			</div>
 		</div>
+
+		<div id="accordion"></div>
 	</div>
- 
- 
+
+
+
+
 </body>
 
 <script
@@ -161,40 +60,112 @@
 	src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </html>
 <script type="text/javascript">
-	
 	$('#listaNavegadorAdministrador').addClass("activeVerde"); //Para que en el navegador aparezca activo esta sección
-   
-	
-	function getEquipo(){
-		if($('#idEquipo').val()!=''){
-			$.ajax({
-				url : '/admin/getEquipoConfirmado/'+$('#idEquipo').val()+'?token='+$('#token').val(),
-				method : 'GET',
-				success : function(response) {
-					$('#nombreEquipo').val(response.nombreEquipo);
-					$('#localidad').val(response.localidad);
-					$('#provincia').val(response.provincia);
-					$('#direccion').val(response.direccion);
-					$('#pabellon').val(response.pabellon);
-					$('#email').val(response.email);
-					$('#movil').val(response.movil);
-					$('#primerEntrenador').val(response.primerEntrenador);
-					$('#escudo').val(response.escudo);
-					
-					//Cuando muestro un equipo, añado a la vista todos los jugadores que pertenecen a un equipo, llamando a la función addJugadorReal
-					for (var i = 0; i < response.jugadores.length; i++) {
-						addJugadorReal(response.jugadores[i]);
-					}
-				},
-				error : function() {
-					alert('Error inesperado');
-				}
-			});
-		}
-		
-	}
-	
 
-	
-	
+	function getJornadas() {
+		$
+				.ajax({
+					url : '/getJornadas',
+					method : 'GET',
+					success : function(response) {
+
+						if (response != null && response.length > 0) {
+							$('#listaJornadas').append(
+									'<option onchange=traeJornada("'
+											+ response[0].id + '") value="'
+											+ response[0].id + '">'
+											+ response[0].numeroJornada
+											+ '</option>');
+							$('#divTablaJornada').append(
+									'<table id="tablaPartidosJornada'+response[0].id+'" class="table">'
+											+ '<thead>' + '<tr>'
+											+ '<th>Nº partido</th>'
+											+ '<th>Equipo local</th>'
+											+ '<th>Equipo visitante</th>'
+											+ '<th>Resultado</th>' + '</tr>'
+											+ '</thead>' + '<tbody>'
+											+ '</tbody>' + '</table>');
+							for (var j = 0; j < response[0].partidos.length; j++) {
+								var resultado;
+								if (response[0].partidos[j].equipoLocal == 'Descansa'
+										|| response[0].partidos[j].equipoVisitante == 'Descansa'
+										|| response[0].partidos[j].resultado == null) {
+									resultado = '-';
+								} else {
+									resultado = response[0].partidos[j].resultado;
+								}
+
+								$(
+										'#tablaPartidosJornada'
+												+ response[0].id + ' tbody')
+										.append(
+												'<tr><td>'
+														+ response[0].partidos[j].numeroPartido
+														+ '</td>'
+														+ '<td>'
+														+ response[0].partidos[j].equipoLocal
+														+ '</td><td>'
+														+ response[0].partidos[j].equipoVisitante
+														+ '</td><td>'
+														+ resultado
+														+ '</td></tr>');
+							}
+						}
+						for (var i = 1; i < response.length; i++) {
+							$('#listaJornadas').append(
+									'<option value="'+response[i].id+'">'
+											+ response[i].numeroJornada
+											+ '</option>');
+							$('#divTablaJornada')
+									.append(
+											'<table hidden="true" id="tablaPartidosJornada'+response[i].id+'" class="table">'
+													+ '<thead>'
+													+ '<tr>'
+													+ '<th>Nº partido</th>'
+													+ '<th>Equipo local</th>'
+													+ '<th>Equipo visitante</th>'
+													+ '<th>Resultado</th>'
+													+ '</tr>'
+													+ '</thead>'
+													+ '<tbody>'
+													+ '</tbody>'
+													+ '</table>');
+							for (var j = 0; j < response[i].partidos.length; j++) {
+								var resultado;
+								if (response[i].partidos[j].equipoLocal == 'Descansa'
+										|| response[i].partidos[j].equipoVisitante == 'Descansa'
+										|| response[i].partidos[j].resultado == null) {
+									resultado = '-';
+								} else {
+									resultado = response[i].partidos[j].resultado;
+								}
+
+								$(
+										'#tablaPartidosJornada'
+												+ response[i].id + ' tbody')
+										.append(
+												'<tr><td>'
+														+ response[i].partidos[j].numeroPartido
+														+ '</td>'
+														+ '<td>'
+														+ response[i].partidos[j].equipoLocal
+														+ '</td><td>'
+														+ response[i].partidos[j].equipoVisitante
+														+ '</td><td>'
+														+ resultado
+														+ '</td></tr>');
+							}
+						}
+					},
+					error : function() {
+						alert('Error inesperado');
+					}
+				});
+
+	}
+	$('#listaJornadas').on('change', function() {
+		$('table').hide();
+		$('#tablaPartidosJornada' + $(this).val()).show();
+	});
+	getJornadas();
 </script>
