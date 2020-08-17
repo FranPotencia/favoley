@@ -29,7 +29,7 @@
 				<table id="tablaClasificacion" class="table">
 					<thead>
 						<tr>
-							<th>Posición</th>
+							<th>Posicion</th>
 							<th>Equipo</th>
 							<th>PJ</th>
 							<th>PG</th>
