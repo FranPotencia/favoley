@@ -24,7 +24,9 @@
 				<select class="form-control" id="listaJornadas">
 				</select>
 			</div>
-			<div id="divTablaJornada" class="col-xs-12"></div>
+			<div id="divTablaJornada" class="col-xs-12">
+			
+			</div>
 			<div id="divTablaClasificacion" class="col-xs-12">
 				<table id="tablaClasificacion" class="table">
 					<thead>
@@ -42,11 +44,8 @@
 					<tbody>
 					</tbody>
 				</table>
-
 			</div>
 		</div>
-
-		<div id="accordion"></div>
 	</div>
 
 
@@ -60,11 +59,37 @@
 	src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </html>
 <script type="text/javascript">
-	$('#listaNavegadorAdministrador').addClass("activeVerde"); //Para que en el navegador aparezca activo esta sección
+	$('#listaNavegadorCompeticion').addClass("activeVerde"); //Para que en el navegador aparezca activo esta sección
 
+	function getClasificacion(){
+		$.ajax({
+			url : '/getClasificacion',
+			method : 'GET',
+			success : function(response) {
+				if (response != null && response.length > 0) {
+					for (var i = 0; i < response.length; i++) {
+						$('#tablaClasificacion tbody')
+								.append(
+										'<tr><td>' + response[i].posicion + '</td>'
+												+ '<td>' + response[i].nombre + '</td>'
+												+ '<td>' + response[i].partidosJugados + '</td>'
+												+ '<td>' + response[i].partidosGanados + '</td>'
+												+ '<td>' + response[i].partidosPerdidos + '</td>'
+												+ '<td>' + response[i].tanteosFavor + '</td>'
+												+ '<td>' + response[i].tanteosContra + '</td>'
+												+ '<td>' + response[i].puntos + '</td>'
+												+ '</tr>');
+					}
+				}
+			},
+			error: function(){
+				alert('Ha ocurrido un error consultando clasificación')	;	
+			}
+		})
+	}
+		
 	function getJornadas() {
-		$
-				.ajax({
+		$.ajax({
 					url : '/getJornadas',
 					method : 'GET',
 					success : function(response) {
@@ -77,7 +102,7 @@
 											+ response[0].numeroJornada
 											+ '</option>');
 							$('#divTablaJornada').append(
-									'<table id="tablaPartidosJornada'+response[0].id+'" class="table">'
+									'<table id="tablaPartidosJornada'+response[0].id+'" class="table classHidden">'
 											+ '<thead>' + '<tr>'
 											+ '<th>Nº partido</th>'
 											+ '<th>Equipo local</th>'
@@ -118,7 +143,7 @@
 											+ '</option>');
 							$('#divTablaJornada')
 									.append(
-											'<table hidden="true" id="tablaPartidosJornada'+response[i].id+'" class="table">'
+											'<table hidden="true" id="tablaPartidosJornada'+response[i].id+'" class="table classHidden">'
 													+ '<thead>'
 													+ '<tr>'
 													+ '<th>Nº partido</th>'
@@ -164,8 +189,9 @@
 
 	}
 	$('#listaJornadas').on('change', function() {
-		$('table').hide();
+		$('.classHidden').hide();
 		$('#tablaPartidosJornada' + $(this).val()).show();
 	});
 	getJornadas();
+	getClasificacion();
 </script>

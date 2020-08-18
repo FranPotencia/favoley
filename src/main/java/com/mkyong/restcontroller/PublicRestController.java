@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mkyong.model.Arbitro;
 import com.mkyong.model.Equipo;
+import com.mkyong.model.EquipoClasificacion;
 import com.mkyong.model.EquipoConfirmado;
 import com.mkyong.model.Jornada;
 import com.mkyong.model.Usuario;
 import com.mkyong.service.ArbitroService;
+import com.mkyong.service.ClasificacionService;
 import com.mkyong.service.EquipoConfirmadoService;
 import com.mkyong.service.EquipoService;
 import com.mkyong.service.GeneradorJornadasService;
@@ -38,6 +40,9 @@ public class PublicRestController {
 	private EquipoConfirmadoService equipoConfirmadoService;
 	@Autowired
 	private ArbitroService arbitroService;
+	
+	@Autowired
+	private ClasificacionService clasificacionService;
 	
 	@Autowired
 	private GeneradorJornadasService generadorJornadasService;
@@ -61,6 +66,18 @@ public class PublicRestController {
 			return new ResponseEntity<List<Jornada>>(listaJornada, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<List<Jornada>>(listaJornada, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@RequestMapping(value = "/getClasificacion", method = RequestMethod.GET)
+	public ResponseEntity<List<EquipoClasificacion>> getClasificacion() {
+
+		List<EquipoClasificacion> listaClasificacion = new ArrayList<EquipoClasificacion>();
+		try {
+			listaClasificacion = clasificacionService.getClasificacion();
+			return new ResponseEntity<List<EquipoClasificacion>>(listaClasificacion, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<List<EquipoClasificacion>>(listaClasificacion, HttpStatus.BAD_REQUEST);
 		}
 	}
 	
@@ -88,6 +105,8 @@ public class PublicRestController {
 		}
 	}
 
+	
+	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ResponseEntity<String> login(@Valid @RequestBody Usuario usuario) {
 		try {

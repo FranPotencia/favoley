@@ -11,9 +11,6 @@
 <body>
 	<jsp:include page="complementos/header.jsp"></jsp:include>
 
-	<div class="container">
-	<button id="generar">genera jornadas</button>
-	</div>
 </body>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -23,19 +20,5 @@
 
 <script type="text/javascript">
 	$('#listaNavegadorInicio').addClass("activeVerde");
-	$('#generar').on('click',function(){
-		$.ajax({
-			url : '/generaJornadas',
-			method : 'POST',
-			"headers" : {
-				"Content-Type" : "application/json"
-			},
-			success : function(response) {
-				alert('Jornadas generadas')
-			},
-			error : function() {
-				alert('Ha ocurrido un error');
-			}
-		});
-	})
+	
 </script>

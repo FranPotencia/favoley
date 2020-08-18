@@ -76,6 +76,7 @@
 								</ul>
 						</li>
 					</c:if>
+					<li id="listaNavegadorCompeticion"><a href="/jornadas" class="fontWhite">Competición</a></li>
 					<li id="listaNavegadorAcceso"><a href="/acceso" class="fontWhite">Acceso</a></li>
 				 </ul>
 			</div>
