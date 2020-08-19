@@ -1,16 +1,19 @@
 package com.mkyong.service;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.mkyong.model.EquipoConfirmado;
 import com.mkyong.model.Jornada;
+import com.mkyong.model.JornadaDTO;
 import com.mkyong.model.Jugador;
 import com.mkyong.model.JugadorConfirmado;
 import com.mkyong.model.Partido;
@@ -35,7 +38,7 @@ public class JornadaService {
 	
 	public List<Jornada> getAllJornadas() {
 
-		// DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 		List<Jornada> listaJornadas = new ArrayList<Jornada>();
 
@@ -43,8 +46,10 @@ public class JornadaService {
 
 		if (!CollectionUtils.isEmpty(listaJornadas)) {
 			for (Jornada jornada : listaJornadas) {
-				// String strDate = dateFormat.format(jornada.getFecha());
-				// jornada.setFechaAltaFormateada(strDate);
+				if(jornada.getFecha()!=null) {
+					String strDate = dateFormat.format(jornada.getFecha());
+					jornada.setFechaJornadaFormateada(strDate);
+				}
 			}
 		}
 
@@ -70,6 +75,15 @@ public class JornadaService {
 		return jornadaGuardada;
 	}
 
+	public void guardarJornadaPartidos(JornadaDTO jornadaDTO) throws ParseException {
+		Jornada jornada=jornadaDAO.findOne(jornadaDTO.getIdJornada());
+		if(!StringUtils.isEmpty(jornadaDTO.getFechaJornada())) {
+			jornada.setFecha(new SimpleDateFormat("yyyy-MM-dd").parse(jornadaDTO.getFechaJornada()));
+		}
+		jornadaDAO.save(jornada);
+		partidoService.guardarPartidosArbitros(jornadaDTO);
+	}
+	
 	public void deleteJornada(Long id) {
 		jornadaDAO.delete(id);
 	}

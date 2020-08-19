@@ -13,8 +13,10 @@ import com.mkyong.model.Arbitro;
 import com.mkyong.model.ArbitroConfirmado;
 import com.mkyong.model.Equipo;
 import com.mkyong.model.Jornada;
+import com.mkyong.model.JornadaDTO;
 import com.mkyong.model.Jugador;
 import com.mkyong.model.Partido;
+import com.mkyong.model.PartidoDTO;
 import com.mkyong.repository.ArbitroDAO;
 import com.mkyong.repository.JornadaDAO;
 import com.mkyong.repository.PartidoDAO;
@@ -34,6 +36,20 @@ public class PartidoService {
 			partidoDAO.save(partidos);
 		}
 
+	}
+	
+	public void guardarPartidosArbitros(JornadaDTO jornadaDTO) {
+		if(!CollectionUtils.isEmpty(jornadaDTO.getListaPartidoDTO())) {
+			for (PartidoDTO partidoDTO : jornadaDTO.getListaPartidoDTO()) {
+				Partido partido=partidoDAO.findByNumeroPartido(partidoDTO.getNumeroPartido());
+				if(partidoDTO.getIdArbitro()!=null) {
+					partido.setIdArbitro(partidoDTO.getIdArbitro());
+				} else {
+					partido.setIdArbitro(0L);
+				}
+				partidoDAO.save(partido);
+			}
+		}
 	}
 	
 	public void deleteAll() {

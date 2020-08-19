@@ -36,8 +36,6 @@
 			</div>
 		</c:if>
 		<h2>Gestión jornadas</h2>
-		<button class="btn btn-primary btn-sm" id="generar">Genera
-			jornadas</button>
 
 		<div class="row form-group">
 			<div class="col-xs-9" style="width: 66.3%;"></div>
@@ -48,10 +46,18 @@
 				<select class="form-control input-sm" id="listaJornadas">
 				</select>
 			</div>
-			<div class="col-xs-2">
-				<input type="date" class="form-control input-sm" id="fechaJornada">
+			<div id="divFechaJornadas" class="col-xs-2">
+				
 			</div>
 			<div id="divTablaJornada" class="col-xs-12"></div>
+			<div class="col-xs-1">
+				<button class="btn btn-primary btn-sm" id="generar">Genera
+					jornadas</button>
+			</div>
+			<div class="col-xs-11">
+				<button type="button" onclick="guardarJornada()"
+					style="float: right;" class="btn btn-primary btn-sm">Guardar Jornada</button>
+			</div>
 		</div>
 
 		<h2>Gestión de usuarios</h2>
@@ -128,6 +134,50 @@
 			}
 		});
 	})
+
+	function guardarJornada() {
+
+		if($('#divTablaJornada table:visible tbody tr')!==undefined){
+			var filas=$('#divTablaJornada table:visible tbody tr');
+			var partidos=[];
+			for (var i = 0; i < filas.length; i++) {
+				var partido;
+				if(filas[i].children[1].innerHTML!='Descansa' && filas[i].children[2].innerHTML!='Descansa'){
+					partido={
+							"numeroPartido":filas[i].children[0].innerHTML,
+							"idArbitro":filas[i].children[3].children[0].value
+					};
+					partidos.push(partido);
+				}
+			}
+			var jornada={
+					"idJornada":$('#listaJornadas').val(),
+					"fechaJornada":$('#fechaJornada'+$('#listaJornadas').val()).val(),
+					"listaPartidoDTO":partidos
+			}
+			
+			$.ajax({
+				url : '/admin/guardarJornada?token=' + $('#token').val(),
+				method : 'POST',
+				data : JSON.stringify(jornada),
+				"headers" : {
+					"Content-Type" : "application/json"
+				},
+				success : function(response) {
+					alert('Jornada guardada')
+				},
+				error : function() {
+					alert('No se ha podido guardar la jornada');
+				}
+			});
+			
+		} else{
+			alert('No hay jornada para guardar')
+		}
+		
+		
+	}
+
 	function postUsuario() {
 
 		var usuario = {
@@ -207,15 +257,18 @@
 		});
 	}
 
-	var optionsArbitros='<option value=""></option>';
+	var optionsArbitros = '<option value=""></option>';
 	function getArbitros() {
 		$.ajax({
-			url : '/admin/getArbitrosConfirmados?token='+$("#token").val(),
+			url : '/admin/getArbitrosConfirmados?token=' + $("#token").val(),
 			method : 'GET',
 			success : function(response) {
-				if(response!=null){
+				if (response != null) {
 					for (var i = 0; i < response.length; i++) {
-						optionsArbitros=optionsArbitros+'<option value="'+response[i].id+'">'+response[i].nombre+' '+response[i].apellidos+'</option>';
+						optionsArbitros = optionsArbitros
+								+ '<option value="'+response[i].id+'">'
+								+ response[i].nombre + ' '
+								+ response[i].apellidos + '</option>';
 					}
 				}
 			},
@@ -238,6 +291,8 @@
 											+ response[0].id + '">'
 											+ response[0].numeroJornada
 											+ '</option>');
+							$('#divFechaJornadas').append('<input type="date" class="form-control input-sm classHidden" id="fechaJornada'+response[0].id+'">');
+							$('#fechaJornada'+response[0].id).val(response[0].fechaJornadaFormateada);
 							$('#divTablaJornada').append(
 									'<table id="tablaPartidosJornada'+response[0].id+'" class="table classHidden">'
 											+ '<thead>' + '<tr>'
@@ -250,11 +305,11 @@
 							for (var j = 0; j < response[0].partidos.length; j++) {
 								var resultado;
 								if (response[0].partidos[j].equipoLocal == 'Descansa'
-										|| response[0].partidos[j].equipoVisitante == 'Descansa'
-										|| response[0].partidos[j].resultado == null) {
+										|| response[0].partidos[j].equipoVisitante == 'Descansa') {
 									resultado = '-'
 								} else {
-									resultado = '<select class="form-control input-sm" style="width:50%;" id="arbitros">'+optionsArbitros+'</select>';
+									resultado = '<select class="form-control input-sm" id="arbitro'+response[0].partidos[j].numeroPartido+'">'
+											+ optionsArbitros + '</select>';
 								}
 
 								$(
@@ -271,6 +326,9 @@
 														+ '</td><td>'
 														+ resultado
 														+ '</td></tr>');
+								if(resultado!='-'){
+									$('#arbitro'+response[0].partidos[j].numeroPartido).val(response[0].partidos[j].idArbitro);
+								}
 							}
 						}
 						for (var i = 1; i < response.length; i++) {
@@ -278,6 +336,8 @@
 									'<option value="'+response[i].id+'">'
 											+ response[i].numeroJornada
 											+ '</option>');
+							$('#divFechaJornadas').append('<input type="date" class="form-control input-sm classHidden" style="display:none;" id="fechaJornada'+response[i].id+'">');
+							$('#fechaJornada'+response[i].id).val(response[i].fechaJornadaFormateada);
 							$('#divTablaJornada')
 									.append(
 											'<table hidden="true" id="tablaPartidosJornada'+response[i].id+'" class="table classHidden">'
@@ -298,7 +358,8 @@
 										|| response[i].partidos[j].equipoVisitante == 'Descansa') {
 									resultado = '-'
 								} else {
-									resultado = '<select class="form-control input-sm" id="arbitros">'+optionsArbitros+'</select>';
+									resultado = '<select class="form-control input-sm" id="arbitro'+response[i].partidos[j].numeroPartido+'">'
+											+ optionsArbitros + '</select>';
 								}
 
 								$(
@@ -315,6 +376,10 @@
 														+ '</td><td>'
 														+ resultado
 														+ '</td></tr>');
+								if(resultado!='-'){
+									$('#arbitro'+response[i].partidos[j].numeroPartido).val(response[i].partidos[j].idArbitro);
+								}
+								
 							}
 						}
 					},
@@ -326,6 +391,7 @@
 	}
 	$('#listaJornadas').on('change', function() {
 		$('.classHidden').hide();
+		$('#fechaJornada' + $(this).val()).show();
 		$('#tablaPartidosJornada' + $(this).val()).show();
 	});
 	getArbitros();

@@ -21,6 +21,7 @@ import com.mkyong.model.ArbitroConfirmado;
 import com.mkyong.model.Equipo;
 import com.mkyong.model.EquipoActualizado;
 import com.mkyong.model.EquipoConfirmado;
+import com.mkyong.model.JornadaDTO;
 import com.mkyong.model.Usuario;
 import com.mkyong.service.ArbitroActualizadoService;
 import com.mkyong.service.ArbitroConfirmadoService;
@@ -225,6 +226,22 @@ public class PrivateRestController {
 			return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<Usuario>(usuario, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@RequestMapping(value = "/guardarJornada", method = RequestMethod.POST)
+	public ResponseEntity guardarJornada(@Valid @RequestBody JornadaDTO jornadaDTO,
+			@RequestParam(required = true, name = "token") String token) {
+		try {
+			if (tokenService.getTipoToken(token).equals("ALL")) {
+				jornadaService.guardarJornadaPartidos(jornadaDTO);
+				return new ResponseEntity(HttpStatus.OK);
+			} else {
+				return new ResponseEntity(HttpStatus.FORBIDDEN);
+			}
+
+		} catch (Exception e) {
+			return new ResponseEntity(HttpStatus.BAD_REQUEST);
 		}
 	}
 

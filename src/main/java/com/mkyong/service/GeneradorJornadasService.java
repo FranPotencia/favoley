@@ -83,18 +83,18 @@ public class GeneradorJornadasService {
 				
 				//Elaboro la matriz final de enfrentamientos por jornada (primera vuelta)
 				if(j==0){
-					if(i%2==0) jornadas[i][j] = matriz2[i][j] + "-" + matriz1[i][j] + " ";
-					else jornadas[i][j] = matriz1[i][j] + "-" + matriz2[i][j] + " ";
+					if(i%2==0) jornadas[i][j] = matriz2[i][j] + "-" + matriz1[i][j];
+					else jornadas[i][j] = matriz1[i][j] + "-" + matriz2[i][j];
 				}
-				else jornadas[i][j] = matriz1[i][j] + "-" + matriz2[i][j] + " ";
+				else jornadas[i][j] = matriz1[i][j] + "-" + matriz2[i][j];
 				
 				
 				//segunda vuelta - al reves que la primera
 				if(j==0){
-					if(i%2==0) jornadas2[i][j] = matriz1[i][j] + "-" + matriz2[i][j] + " ";
-					else jornadas2[i][j] = matriz2[i][j] + "-" + matriz1[i][j] + " ";
+					if(i%2==0) jornadas2[i][j] = matriz1[i][j] + "-" + matriz2[i][j];
+					else jornadas2[i][j] = matriz2[i][j] + "-" + matriz1[i][j];
 				}
-				else jornadas2[i][j] = matriz2[i][j] + "-" + matriz1[i][j] + " ";
+				else jornadas2[i][j] = matriz2[i][j] + "-" + matriz1[i][j];
 				
 			}
 		}

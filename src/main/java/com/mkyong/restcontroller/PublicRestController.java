@@ -62,7 +62,7 @@ public class PublicRestController {
 
 		List<Jornada> listaJornada = new ArrayList<Jornada>();
 		try {
-			listaJornada = generadorJornadasService.getAllJorndas();
+			listaJornada = jornadaService.getAllJornadas();
 			return new ResponseEntity<List<Jornada>>(listaJornada, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<List<Jornada>>(listaJornada, HttpStatus.BAD_REQUEST);

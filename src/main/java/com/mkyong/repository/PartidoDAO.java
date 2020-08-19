@@ -11,4 +11,6 @@ import com.mkyong.model.Partido;
 public interface PartidoDAO extends JpaRepository<Partido, Long> {
 
 	void deleteByJornada(Jornada jornada);
+	
+	Partido findByNumeroPartido(Long numeroPartido);
 }
