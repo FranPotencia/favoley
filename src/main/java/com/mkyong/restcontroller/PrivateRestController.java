@@ -22,6 +22,7 @@ import com.mkyong.model.Equipo;
 import com.mkyong.model.EquipoActualizado;
 import com.mkyong.model.EquipoConfirmado;
 import com.mkyong.model.JornadaDTO;
+import com.mkyong.model.PartidoArbitroDTO;
 import com.mkyong.model.Usuario;
 import com.mkyong.service.ArbitroActualizadoService;
 import com.mkyong.service.ArbitroConfirmadoService;
@@ -32,6 +33,7 @@ import com.mkyong.service.EquipoService;
 import com.mkyong.service.GestionFederativaService;
 import com.mkyong.service.JornadaService;
 import com.mkyong.service.JugadorService;
+import com.mkyong.service.PartidoService;
 import com.mkyong.service.TokenService;
 import com.mkyong.service.UsuarioService;
 
@@ -45,6 +47,8 @@ public class PrivateRestController {
 	private EquipoActualizadoService equipoActualizadoService;
 	@Autowired
 	private UsuarioService usuarioService;
+	@Autowired
+	private PartidoService partidoService;
 	@Autowired
 	private JugadorService jugadorService;
 	@Autowired
@@ -80,6 +84,24 @@ public class PrivateRestController {
 		}
 	}
 
+	@RequestMapping(value = "/getPartidosArbitro", method = RequestMethod.GET)
+	public ResponseEntity<List<PartidoArbitroDTO>> getPartidosArbitro(@RequestParam(required = true, name = "token") String token) {
+
+		List<PartidoArbitroDTO> listaPartidoArbitro = new ArrayList<PartidoArbitroDTO>();
+		try {
+			if (tokenService.getTipoToken(token).equals("ARB")) {
+				String stringIdArbitro=tokenService.getIdAccesoToken(token);
+				listaPartidoArbitro = partidoService.getListaPartidoArbitroDTOByIdArbitro(Long.parseLong(stringIdArbitro));
+				return new ResponseEntity<List<PartidoArbitroDTO>>(listaPartidoArbitro, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<List<PartidoArbitroDTO>>(listaPartidoArbitro, HttpStatus.FORBIDDEN);
+			}
+
+		} catch (Exception e) {
+			return new ResponseEntity<List<PartidoArbitroDTO>>(listaPartidoArbitro, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
 	// ------------------
 	// ACTUALIZAR ÁRBITROS
 	// ------------------

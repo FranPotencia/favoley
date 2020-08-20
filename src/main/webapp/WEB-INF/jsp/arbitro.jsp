@@ -10,42 +10,67 @@
 <body>
 	<jsp:include page="complementos/header.jsp"></jsp:include>
 	<input type="hidden" id="token" value="${token}">
-	<input type="hidden" id="idArbitro" value="${idArbitro}" >
-
-<div class="container">
-		<h1>Datos árbitro</h1>
-	</div>
+	<input type="hidden" id="idArbitro" value="${idArbitro}">
 
 	<div class="container">
+		<h2>Partidos asignados</h2>
+		<div class="row form-group">
+			<div class="col-xs-12">
+				<table id="tablaPartidos" class="table">
+					<thead>
+						<tr>
+							<th>Nº partido</th>
+							<th>Local</th>
+							<th>Visitante</th>
+							<th>Pabellón</th>
+							<th>Set 1</th>
+							<th>Set 2</th>
+							<th>Set 3</th>
+							<th>Set 4</th>
+							<th>Set 5</th>
+							<th>Resultado</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+
+					</tbody>
+
+				</table>
+			</div>
+
+		</div>
+
+
+		<h2>Datos árbitro</h2>
 		<div class="row form-group">
 			<div class="col-xs-3">
-				<label for="nombre">Nombre:</label> <input
-					type="text" class="form-control input-sm" id="nombre" 
+				<label for="nombre">Nombre:</label> <input type="text"
+					class="form-control input-sm" id="nombre"
 					placeholder="Introduzca su nombre">
 			</div>
 			<div class="col-xs-3">
-				<label for="apellidos">Apellidos</label> <input type="text" 
+				<label for="apellidos">Apellidos</label> <input type="text"
 					class="form-control input-sm" id="apellidos"
 					placeholder="Introduzca sus apellidos">
 			</div>
 			<div class="col-xs-3">
-				<label for="dni">DNI</label> <input type="text" 
-					class="form-control input-sm" id="dni"
-					placeholder="00000000W">
+				<label for="dni">DNI</label> <input type="text"
+					class="form-control input-sm" id="dni" placeholder="00000000W">
 			</div>
 			<div class="col-xs-3">
-				<label for="fechaNacimiento">Fecha de Nacimiento</label> <input id="fechaNacimiento" 
-				 class="form-control input-sm" type="date">
+				<label for="fechaNacimiento">Fecha de Nacimiento</label> <input
+					id="fechaNacimiento" class="form-control input-sm" type="date">
 			</div>
 		</div>
 		<div class="row form-group">
 			<div class="col-xs-3">
-				<label for="localidad">Localidad</label> <input type="text" 
+				<label for="localidad">Localidad</label> <input type="text"
 					class="form-control input-sm" id="localidad"
 					placeholder="Localidad">
 			</div>
 			<div class="col-xs-3">
-				<label for="provincia">Provincia</label> <select id="provincia" 
+				<label for="provincia">Provincia</label> <select id="provincia"
 					class="form-control input-sm">
 					<option>Elija una opción...</option>
 					<option value="Huelva">Huelva</option>
@@ -59,20 +84,20 @@
 				</select>
 			</div>
 			<div class="col-xs-3">
-				<label for="email">Correo electrónico</label> <input type="text" 
+				<label for="email">Correo electrónico</label> <input type="text"
 					class="form-control input-sm" id="email"
 					placeholder="tucorreo@gmail.com">
 			</div>
 			<div class="col-xs-3">
-				<label for="movil">Móvil</label> <input type="text" 
+				<label for="movil">Móvil</label> <input type="text"
 					class="form-control input-sm" id="movil"
 					placeholder="Introduzca el nº de móvil">
 			</div>
 		</div>
 		<div class="row form-group">
-		
+
 			<div class="col-xs-3">
-				<label for="delegacion">Delegación</label> <select id="delegacion" 
+				<label for="delegacion">Delegación</label> <select id="delegacion"
 					class="form-control input-sm">
 					<option>Elija una opción...</option>
 					<option value="Huelva">Huelva</option>
@@ -86,7 +111,7 @@
 				</select>
 			</div>
 			<div class="col-xs-3">
-				<label for="licencia">Licencia</label> <select id="licencia" 
+				<label for="licencia">Licencia</label> <select id="licencia"
 					class="form-control input-sm">
 					<option>Elija una opción...</option>
 					<option value="Anotador">Anotador</option>
@@ -94,31 +119,28 @@
 					<option value="TerritorialA">Territorial A</option>
 					<option value="Nacional">Nacional</option>
 				</select>
-		   </div>
-		   <div class="col-xs-3">
-				<label for="movil">Número de licencia</label> <input type="text" disabled="disabled"
-					class="form-control input-sm" id="numeroLicencia"
-					placeholder="Nº de licencia">
+			</div>
+			<div class="col-xs-3">
+				<label for="movil">Número de licencia</label> <input type="text"
+					disabled="disabled" class="form-control input-sm"
+					id="numeroLicencia" placeholder="Nº de licencia">
 			</div>
 
 		</div>
 		<div class="row form-group ">
 			<div class="col-xs-12">
-				<button type="button" onclick="postActualizar()" style="float: right;"
-					class="btn btn-primary btn-sm">Actualizar</button>
+				<button type="button" onclick="postActualizar()"
+					style="float: right;" class="btn btn-primary btn-sm">Actualizar</button>
 			</div>
 		</div>
 
-</div>
+		<h2>Cambiar contraseña</h2>
 
-<div class="container">
-		<h1>Cambiar contraseña</h1>
-	</div>
-	<div class="container">
 		<div class="row form-group">
 			<div class="col-xs-3">
-				<label for="nombreEquipo">Usuario</label> <input type="text" disabled="disabled"
-					class="form-control input-sm" id="username" placeholder="Usuario">
+				<label for="nombreEquipo">Usuario</label> <input type="text"
+					disabled="disabled" class="form-control input-sm" id="username"
+					placeholder="Usuario">
 			</div>
 			<div class="col-xs-3">
 				<label for="direccion">Contraseña</label> <input type="password"
@@ -132,7 +154,64 @@
 					class="btn btn-primary btn-sm">Guardar</button>
 			</div>
 		</div>
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+			aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<input type="hidden" id="numeroPartidoIngresar">
+						<div class="row form-group ">
+							<div class="col-xs-12">
+								<table id="tablaPartido" class="table">
+									<thead>
+										<tr>
+											<th style="text-align:left" >Set</th>
+											<th style="text-align:center" id="equipoLocalIngresar"></th>
+											<th style="text-align:center" id="equipoVisitanteIngresar"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr><td>1º</td><td><input type="number"
+					class="form-control input-sm" ></td><td><input type="number"
+					class="form-control input-sm" ></td></tr>
+										<tr><td>2º</td><td><input type="number"
+					class="form-control input-sm" ></td><td><input type="number"
+					class="form-control input-sm" ></td></tr>
+										<tr><td>3º</td><td><input type="number"
+					class="form-control input-sm" ></td><td><input type="number"
+					class="form-control input-sm" ></td></tr>
+										<tr><td>4º</td><td><input type="number"
+					class="form-control input-sm" ></td><td><input type="number"
+					class="form-control input-sm" ></td></tr>
+										<tr><td>5º</td><td><input type="number"
+					class="form-control input-sm" ></td><td><input type="number"
+					class="form-control input-sm" ></td></tr>
+										<tr><td>Resultado</td><td><input type="number"
+					class="form-control input-sm" ></td><td><input type="number"
+					class="form-control input-sm" ></td></tr>
+									</tbody>
 
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Close</button>
+						<button type="button" class="btn btn-primary">Save
+							changes</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
 
 
@@ -146,26 +225,162 @@
 <script type="text/javascript">
 	$('#listaNavegadorArbitro').addClass("activeVerde"); //Para que en el navegador aparezca activo esta sección
 
-	
+	function getPartidosArbitro() {
+		$
+				.ajax({
+					url : '/admin/getPartidosArbitro/?token='
+							+ $('#token').val(),
+					method : 'GET',
+					success : function(response) {
+						if (response != null && response.length > 0) {
+							for (var i = 0; i < response.length; i++) {
+								var set1 = "";
+								var set2 = "";
+								var set3 = "";
+								var set4 = "";
+								var set5 = "";
+								var resultadoFinal = "";
+								if (response[i].set1 != null) {
+									set1 = response[i].set1;
+								}
+								if (response[i].set2 != null) {
+									set2 = response[i].set2;
+								}
+								if (response[i].set3 != null) {
+									set3 = response[i].set3;
+								}
+								if (response[i].set4 != null) {
+									set4 = response[i].set4;
+								}
+								if (response[i].set5 != null) {
+									set5 = response[i].set5;
+								}
+								if (response[i].resultado != null) {
+									resultadoFinal = response[i].resultado;
+								}
+								if (response[i].resultado != null) {
+
+									$('#tablaPartidos tbody')
+											.append(
+													'<tr id="filaPartido'+i+'">'
+															+ '<td>'
+															+ response[i].numeroPartido
+															+ '</td>'
+															+ '<td>'
+															+ response[i].equipoLocal
+															+ '</td>'
+															+ '<td>'
+															+ response[i].equipoVisitante
+															+ '</td>'
+															+ '<td>'
+															+ response[i].pabellon
+															+ '</td>'
+															+ '<td>'
+															+ set1
+															+ '</td>'
+															+ '<td>'
+															+ set2
+															+ '</td>'
+															+ '<td>'
+															+ set3
+															+ '</td>'
+															+ '<td>'
+															+ set4
+															+ '</td>'
+															+ '<td>'
+															+ set5
+															+ '</td>'
+															+ '<td>'
+															+ resultadoFinal
+															+ '</td>'
+															+ '<td><label>Partido finalizado</label></td>'
+															+ '</tr>');
+								} else {
+									$('#tablaPartidos tbody')
+											.append(
+													'<tr id="filaPartido'+i+'">'
+															+ '<td>'
+															+ response[i].numeroPartido
+															+ '</td>'
+															+ '<td>'
+															+ response[i].equipoLocal
+															+ '</td>'
+															+ '<td>'
+															+ response[i].equipoVisitante
+															+ '</td>'
+															+ '<td>'
+															+ response[i].pabellon
+															+ '</td>'
+															+ '<td>'
+															+ set1
+															+ '</td>'
+															+ '<td>'
+															+ set2
+															+ '</td>'
+															+ '<td>'
+															+ set3
+															+ '</td>'
+															+ '<td>'
+															+ set4
+															+ '</td>'
+															+ '<td>'
+															+ set5
+															+ '</td>'
+															+ '<td>'
+															+ resultadoFinal
+															+ '</td>'
+															+ '<td><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" id="ingresarResultado'+i+'" >Ingresar resultados</button></td>'
+															+ '</tr>');
+									$('#ingresarResultado' + i)
+											.on(
+													'click',
+													function() {
+														$('#numeroPartidoIngresar').val($(this)
+																				.parent()
+																				.parent()
+																				.children()[0].innerHTML);
+														$('#equipoLocalIngresar').html($(this)
+																.parent()
+																.parent()
+																.children()[1].innerHTML);
+														$('#equipoVisitanteIngresar').html($(this)
+																.parent()
+																.parent()
+																.children()[2].innerHTML);
+														
+														
+
+													})
+								}
+							}
+
+						}
+					},
+					error : function() {
+						alert('No se ha podido guardar el árbitro');
+					}
+				});
+	}
+
 	function postActualizar() {
-		
+
 		var arbitro = {
-				"nombre" : $('#nombre').val(),
-				"apellidos" : $('#apellidos').val(),
-				"dni" : $('#dni').val(),
-				"fechaNacimiento" : $('#fechaNacimiento').val(),
-				"localidad" : $('#localidad').val(),
-				"provincia" : $('#provincia').val(),
-				"email" : $('#email').val(),
-				"movil" : $('#movil').val(),
-				"delegacion" : $('#delegacion').val(),
-				"licencia" : $('#licencia').val(),
-				"numeroLicencia" : $('#numeroLicencia').val()
-			}
-		
+			"nombre" : $('#nombre').val(),
+			"apellidos" : $('#apellidos').val(),
+			"dni" : $('#dni').val(),
+			"fechaNacimiento" : $('#fechaNacimiento').val(),
+			"localidad" : $('#localidad').val(),
+			"provincia" : $('#provincia').val(),
+			"email" : $('#email').val(),
+			"movil" : $('#movil').val(),
+			"delegacion" : $('#delegacion').val(),
+			"licencia" : $('#licencia').val(),
+			"numeroLicencia" : $('#numeroLicencia').val()
+		}
 
 		$.ajax({
-			url : '/admin/peticionActualizarArbitro/?token='+$('#token').val(),
+			url : '/admin/peticionActualizarArbitro/?token='
+					+ $('#token').val(),
 			method : 'POST',
 			data : JSON.stringify(arbitro),
 			"headers" : {
@@ -180,12 +395,12 @@
 		});
 
 	}
-	
-	
-	function getArbitro(){
-		if($('#idArbitro').val()!=''){
+
+	function getArbitro() {
+		if ($('#idArbitro').val() != '') {
 			$.ajax({
-				url : '/admin/getArbitroConfirmado/'+$('#idArbitro').val()+'?token='+$('#token').val(),
+				url : '/admin/getArbitroConfirmado/' + $('#idArbitro').val()
+						+ '?token=' + $('#token').val(),
 				method : 'GET',
 				success : function(response) {
 					$('#nombre').val(response.nombre);
@@ -199,7 +414,7 @@
 					$('#email').val(response.email);
 					$('#movil').val(response.movil);
 					$('#numeroLicencia').val(response.numeroLicencia);
-					
+
 				},
 				error : function(response) {
 					alert('Error inesperado');
@@ -207,8 +422,7 @@
 			});
 		}
 	}
-	
-	
+
 	function postUsuario() {
 
 		var usuario = {
@@ -248,7 +462,8 @@
 			}
 		});
 	}
-    
+
 	getArbitro();
 	getUsuario();
+	getPartidosArbitro();
 </script>

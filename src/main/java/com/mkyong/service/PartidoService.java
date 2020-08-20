@@ -16,6 +16,7 @@ import com.mkyong.model.Jornada;
 import com.mkyong.model.JornadaDTO;
 import com.mkyong.model.Jugador;
 import com.mkyong.model.Partido;
+import com.mkyong.model.PartidoArbitroDTO;
 import com.mkyong.model.PartidoDTO;
 import com.mkyong.repository.ArbitroDAO;
 import com.mkyong.repository.JornadaDAO;
@@ -26,6 +27,9 @@ public class PartidoService {
 
 	@Autowired
 	private PartidoDAO partidoDAO;
+	
+	@Autowired
+	private QueryComponent queryComponent;
 	
 	private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -77,6 +81,31 @@ public class PartidoService {
 		return listaPartidos;
 	}
 	
+	public List<PartidoArbitroDTO> getListaPartidoArbitroDTOByIdArbitro(Long idArbitro){
+		
+		List<PartidoArbitroDTO> result=new ArrayList<PartidoArbitroDTO>();
+		
+		List<Partido> listaPartido=partidoDAO.findByIdArbitro(idArbitro);
+		
+		if(!CollectionUtils.isEmpty(listaPartido)) {
+			for (Partido partido : listaPartido) {
+				PartidoArbitroDTO partidoArbitroDTO=new PartidoArbitroDTO();
+				partidoArbitroDTO.setEquipoLocal(partido.getEquipoLocal());
+				partidoArbitroDTO.setEquipoVisitante(partido.getEquipoVisitante());
+				partidoArbitroDTO.setNumeroPartido(partido.getNumeroPartido());
+				partidoArbitroDTO.setPabellon(queryComponent.getPabellonByNombreEquipo(partido.getEquipoLocal()));
+				partidoArbitroDTO.setResultado(partido.getResultado());
+				partidoArbitroDTO.setSet1(partido.getSet1());
+				partidoArbitroDTO.setSet2(partido.getSet2());
+				partidoArbitroDTO.setSet3(partido.getSet3());
+				partidoArbitroDTO.setSet4(partido.getSet4());
+				partidoArbitroDTO.setSet5(partido.getSet5());
+				result.add(partidoArbitroDTO);
+			}
+		}
+		
+		return result;
+	}
 	
 	public Partido getPartidoById(Long id) { //Devuelve partido a través del ID
 		

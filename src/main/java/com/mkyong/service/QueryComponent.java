@@ -25,6 +25,16 @@ public class QueryComponent {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
+	public String getPabellonByNombreEquipo(String nombreEquipo) {
+		String sql="select PABELLON from EQUIPO_CONFIRMADO where NOMBREEQUIPO='"+nombreEquipo+"'";
+		List<Map<String, Object>> row = jdbcTemplate.queryForList(sql);
+		if (!CollectionUtils.isEmpty(row)) {
+			return row.get(0).get("PABELLON").toString();
+		} else {
+			return "-";
+		}
+	}
+	
 	public String getPartidosJugadosByEquipo(String equipo) {
 		String sql = "SELECT id FROM PARTIDO WHERE (EQUIPO_LOCAL='" + equipo + "' or EQUIPO_VISITANTE='" + equipo
 				+ "') " + "and (EQUIPO_LOCAL<>'Descansa' and EQUIPO_VISITANTE<>'Descansa') and resultado is not null";
