@@ -40,7 +40,7 @@ public class Partido {
 
 	@Column(name = "RESULTADO")
 	private String resultado;
-	
+
 	@Column(name = "SET1")
 	private String set1;
 
@@ -63,11 +63,21 @@ public class Partido {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_jornada")
 	private Jornada jornada;
-	
+
 	@Column(name = "ID_ARBITRO")
 	private Long idArbitro;
 
-	
+	@Transient
+	private String error;
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
+
 	public String getSet1() {
 		return set1;
 	}

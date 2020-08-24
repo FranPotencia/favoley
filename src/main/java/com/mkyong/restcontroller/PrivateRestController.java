@@ -22,7 +22,9 @@ import com.mkyong.model.Equipo;
 import com.mkyong.model.EquipoActualizado;
 import com.mkyong.model.EquipoConfirmado;
 import com.mkyong.model.JornadaDTO;
+import com.mkyong.model.Partido;
 import com.mkyong.model.PartidoArbitroDTO;
+import com.mkyong.model.PartidoDTO;
 import com.mkyong.model.Usuario;
 import com.mkyong.service.ArbitroActualizadoService;
 import com.mkyong.service.ArbitroConfirmadoService;
@@ -99,6 +101,25 @@ public class PrivateRestController {
 
 		} catch (Exception e) {
 			return new ResponseEntity<List<PartidoArbitroDTO>>(listaPartidoArbitro, HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	
+	@RequestMapping(value = "/guardarPartido", method = RequestMethod.POST)
+	public ResponseEntity<Partido> guardarPartido(@Valid @RequestBody PartidoDTO partidoDTO,
+			@RequestParam(required = true, name = "token") String token) {
+		Partido partido=new Partido();
+		try {
+			if (tokenService.getTipoToken(token).equals("ARB")) {
+				partido=partidoService.guardarPartidoDTO(partidoDTO);
+				return new ResponseEntity<Partido>(partido,HttpStatus.OK);
+			} else {
+				return new ResponseEntity<Partido>(partido,HttpStatus.FORBIDDEN);
+			}
+
+		} catch (Exception e) {
+			partido.setError(e.getMessage());
+			return new ResponseEntity<Partido>(partido,HttpStatus.BAD_REQUEST);
 		}
 	}
 	

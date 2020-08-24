@@ -5,6 +5,8 @@
 <head>
 <link rel="stylesheet" type="text/css"
 	href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
 
 </head>
 <body>
@@ -16,7 +18,7 @@
 		<h2>Partidos asignados</h2>
 		<div class="row form-group">
 			<div class="col-xs-12">
-				<table id="tablaPartidos" class="table">
+				<table id="tablaPartidos" class="display">
 					<thead>
 						<tr>
 							<th>Nº partido</th>
@@ -159,7 +161,7 @@
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+						<h3 class="modal-title" id="exampleModalLabel">Datos partido</h3>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -171,30 +173,30 @@
 							<div class="col-xs-12">
 								<table id="tablaPartido" class="table">
 									<thead>
-										<tr>
-											<th style="text-align:left" >Set</th>
-											<th style="text-align:center" id="equipoLocalIngresar"></th>
-											<th style="text-align:center" id="equipoVisitanteIngresar"></th>
+										<tr align="center">
+											<th style="text-align:center" >Set</th>
+											<th id="equipoLocalIngresar" style="text-align:center"></th>
+											<th id="equipoVisitanteIngresar" style="text-align:center"></th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr><td>1º</td><td><input type="number"
-					class="form-control input-sm" ></td><td><input type="number"
+										<tr align="center"><td>1º</td><td><input id="set1Local" type="number" style="width:30%;"
+					class="form-control input-sm" ></td><td><input id="set1Visitante" type="number" style="width:30%;"
 					class="form-control input-sm" ></td></tr>
-										<tr><td>2º</td><td><input type="number"
-					class="form-control input-sm" ></td><td><input type="number"
+										<tr align="center"><td>2º</td><td><input id="set2Local" type="number" style="width:30%;"
+					class="form-control input-sm" ></td><td><input id="set2Visitante" type="number" style="width:30%;"
 					class="form-control input-sm" ></td></tr>
-										<tr><td>3º</td><td><input type="number"
-					class="form-control input-sm" ></td><td><input type="number"
+										<tr align="center"><td>3º</td><td><input id="set3Local" type="number" style="width:30%;"
+					class="form-control input-sm" ></td><td><input id="set3Visitante" type="number" style="width:30%;"
 					class="form-control input-sm" ></td></tr>
-										<tr><td>4º</td><td><input type="number"
-					class="form-control input-sm" ></td><td><input type="number"
+										<tr align="center"><td>4º</td><td><input id="set4Local" type="number" style="width:30%;"
+					class="form-control input-sm" ></td><td><input id="set4Visitante" type="number" style="width:30%;"
 					class="form-control input-sm" ></td></tr>
-										<tr><td>5º</td><td><input type="number"
-					class="form-control input-sm" ></td><td><input type="number"
+										<tr align="center"><td>5º</td><td><input id="set5Local" type="number" style="width:30%;"
+					class="form-control input-sm" ></td><td><input id="set5Visitante" type="number" style="width:30%;"
 					class="form-control input-sm" ></td></tr>
-										<tr><td>Resultado</td><td><input type="number"
-					class="form-control input-sm" ></td><td><input type="number"
+										<tr align="center"><td>Resultado</td><td><input id="resultadoLocal" type="number" max="3" min="0" style="width:30%;"
+					class="form-control input-sm" ></td><td><input id="resultadoVisitante" type="number" max="3" min="0" style="width:30%;"
 					class="form-control input-sm" ></td></tr>
 									</tbody>
 
@@ -204,9 +206,8 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-secondary"
-							data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary">Save
-							changes</button>
+							data-dismiss="modal">Cerrar</button>
+						<button id="botonGuardarPartido" type="button" class="btn btn-primary">Guardar</button>
 					</div>
 				</div>
 			</div>
@@ -217,13 +218,68 @@
 
 </body>
 
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script
+	src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript"
+	src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<!-- <script -->
+<!-- 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 <script type="text/javascript"
 	src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </html>
 <script type="text/javascript">
 	$('#listaNavegadorArbitro').addClass("activeVerde"); //Para que en el navegador aparezca activo esta sección
+
+	$('#botonGuardarPartido').on('click', function(){
+		var partidoDTO={
+			"numeroPartido":$('#numeroPartidoIngresar').val(),
+			"set1Local":$('#set1Local').val(),
+			"set1Visitante":$('#set1Visitante').val(),
+			"set2Local":$('#set2Local').val(),
+			"set2Visitante":$('#set2Visitante').val(),
+			"set3Local":$('#set3Local').val(),
+			"set3Visitante":$('#set3Visitante').val(),
+			"set4Local":$('#set4Local').val(),
+			"set4Visitante":$('#set4Visitante').val(),
+			"set5Local":$('#set5Local').val(),
+			"set5Visitante":$('#set5Visitante').val(),
+			"resultadoLocal":$('#resultadoLocal').val(),
+			"resultadoVisitante":$('#resultadoVisitante').val()
+		}
+		$.ajax({
+			url : '/admin/guardarPartido?token='
+					+ $('#token').val(),
+			method : 'POST',
+			data : JSON.stringify(partidoDTO),
+			"headers" : {
+				"Content-Type" : "application/json"
+			},
+			success : function(response) {
+				alert('Resultados ingresados correctamente');
+				location.reload();
+			},
+			error : function(response) {
+				alert(response.responseJSON.error);
+			}
+		});
+	})
+	var tablaPartidos = $('#tablaPartidos').DataTable({"paging" : true, "responsive" : true,"pageLength" : 3,
+		"lengthChange": false,"info": false,"columns": [
+		    { "orderable": true },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false }
+		  ],"language": {
+	            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+	        }});
 
 	function getPartidosArbitro() {
 		$
@@ -259,78 +315,89 @@
 									resultadoFinal = response[i].resultado;
 								}
 								if (response[i].resultado != null) {
-
-									$('#tablaPartidos tbody')
-											.append(
-													'<tr id="filaPartido'+i+'">'
-															+ '<td>'
-															+ response[i].numeroPartido
-															+ '</td>'
-															+ '<td>'
-															+ response[i].equipoLocal
-															+ '</td>'
-															+ '<td>'
-															+ response[i].equipoVisitante
-															+ '</td>'
-															+ '<td>'
-															+ response[i].pabellon
-															+ '</td>'
-															+ '<td>'
-															+ set1
-															+ '</td>'
-															+ '<td>'
-															+ set2
-															+ '</td>'
-															+ '<td>'
-															+ set3
-															+ '</td>'
-															+ '<td>'
-															+ set4
-															+ '</td>'
-															+ '<td>'
-															+ set5
-															+ '</td>'
-															+ '<td>'
-															+ resultadoFinal
-															+ '</td>'
-															+ '<td><label>Partido finalizado</label></td>'
-															+ '</tr>');
+									var rowNode = tablaPartidos
+								    .row.add( [ response[i].numeroPartido, response[i].equipoLocal, response[i].equipoVisitante,
+								    	response[i].pabellon,set1,set2,set3,set4,set5,resultadoFinal,'<label>Partido finalizado</label>'] )
+								    .draw()
+								    .node();
+// 									$('#tablaPartidos tbody')
+// 											.append(
+// 													'<tr id="filaPartido'+i+'">'
+// 															+ '<td>'
+// 															+ response[i].numeroPartido
+// 															+ '</td>'
+// 															+ '<td>'
+// 															+ response[i].equipoLocal
+// 															+ '</td>'
+// 															+ '<td>'
+// 															+ response[i].equipoVisitante
+// 															+ '</td>'
+// 															+ '<td>'
+// 															+ response[i].pabellon
+// 															+ '</td>'
+// 															+ '<td>'
+// 															+ set1
+// 															+ '</td>'
+// 															+ '<td>'
+// 															+ set2
+// 															+ '</td>'
+// 															+ '<td>'
+// 															+ set3
+// 															+ '</td>'
+// 															+ '<td>'
+// 															+ set4
+// 															+ '</td>'
+// 															+ '<td>'
+// 															+ set5
+// 															+ '</td>'
+// 															+ '<td>'
+// 															+ resultadoFinal
+// 															+ '</td>'
+// 															+ '<td><label>Partido finalizado</label></td>'
+// 															+ '</tr>');
 								} else {
-									$('#tablaPartidos tbody')
-											.append(
-													'<tr id="filaPartido'+i+'">'
-															+ '<td>'
-															+ response[i].numeroPartido
-															+ '</td>'
-															+ '<td>'
-															+ response[i].equipoLocal
-															+ '</td>'
-															+ '<td>'
-															+ response[i].equipoVisitante
-															+ '</td>'
-															+ '<td>'
-															+ response[i].pabellon
-															+ '</td>'
-															+ '<td>'
-															+ set1
-															+ '</td>'
-															+ '<td>'
-															+ set2
-															+ '</td>'
-															+ '<td>'
-															+ set3
-															+ '</td>'
-															+ '<td>'
-															+ set4
-															+ '</td>'
-															+ '<td>'
-															+ set5
-															+ '</td>'
-															+ '<td>'
-															+ resultadoFinal
-															+ '</td>'
-															+ '<td><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" id="ingresarResultado'+i+'" >Ingresar resultados</button></td>'
-															+ '</tr>');
+									
+									var rowNode = tablaPartidos
+								    .row.add( [ response[i].numeroPartido, response[i].equipoLocal, response[i].equipoVisitante,
+								    	response[i].pabellon,set1,set2,set3,set4,set5,resultadoFinal,'<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" id="ingresarResultado'+i+'" >Ingresar resultados</button>'] )
+								    .draw()
+								    .node();
+									
+// 									$('#tablaPartidos tbody')
+// 											.append(
+// 													'<tr id="filaPartido'+i+'">'
+// 															+ '<td>'
+// 															+ response[i].numeroPartido
+// 															+ '</td>'
+// 															+ '<td>'
+// 															+ response[i].equipoLocal
+// 															+ '</td>'
+// 															+ '<td>'
+// 															+ response[i].equipoVisitante
+// 															+ '</td>'
+// 															+ '<td>'
+// 															+ response[i].pabellon
+// 															+ '</td>'
+// 															+ '<td>'
+// 															+ set1
+// 															+ '</td>'
+// 															+ '<td>'
+// 															+ set2
+// 															+ '</td>'
+// 															+ '<td>'
+// 															+ set3
+// 															+ '</td>'
+// 															+ '<td>'
+// 															+ set4
+// 															+ '</td>'
+// 															+ '<td>'
+// 															+ set5
+// 															+ '</td>'
+// 															+ '<td>'
+// 															+ resultadoFinal
+// 															+ '</td>'
+// 															+ '<td><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#exampleModal" id="ingresarResultado'+i+'" >Ingresar resultados</button></td>'
+// 															+ '</tr>');
 									$('#ingresarResultado' + i)
 											.on(
 													'click',
@@ -466,4 +533,7 @@
 	getArbitro();
 	getUsuario();
 	getPartidosArbitro();
+	
+	
+
 </script>

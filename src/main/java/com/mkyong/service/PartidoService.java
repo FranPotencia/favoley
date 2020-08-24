@@ -27,10 +27,10 @@ public class PartidoService {
 
 	@Autowired
 	private PartidoDAO partidoDAO;
-	
+
 	@Autowired
 	private QueryComponent queryComponent;
-	
+
 	private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 	public void guardarPartidos(List<Partido> partidos) {
@@ -41,12 +41,178 @@ public class PartidoService {
 		}
 
 	}
-	
+
+	public Partido guardarPartidoDTO(PartidoDTO partidoDTO) throws Exception {
+		Partido partido = partidoDAO.findByNumeroPartido(partidoDTO.getNumeroPartido());
+		Integer setsLocal = 0;
+		Integer setsVisitante = 0;
+		if (partidoDTO.getSet1Local() != null && partidoDTO.getSet1Visitante() != null) {
+			if (partidoDTO.getSet1Local() > partidoDTO.getSet1Visitante()) {
+				if (partidoDTO.getSet1Local().equals(25) && partidoDTO.getSet1Visitante() <= 23) {
+
+				} else if (partidoDTO.getSet1Local() > 25
+						&& (partidoDTO.getSet1Local() - partidoDTO.getSet1Visitante()) == 2) {
+
+				} else {
+					throw new Exception("Introduzca correctamente los datos del set 1º");
+				}
+				setsLocal++;
+			} else if (partidoDTO.getSet1Visitante() > partidoDTO.getSet1Local()) {
+				if (partidoDTO.getSet1Visitante().equals(25) && partidoDTO.getSet1Local() <= 23) {
+
+				} else if (partidoDTO.getSet1Visitante() > 25
+						&& (partidoDTO.getSet1Visitante() - partidoDTO.getSet1Local()) == 2) {
+
+				} else {
+					throw new Exception("Introduzca correctamente los datos del set 1º");
+				}
+				setsVisitante++;
+			} else {
+				throw new Exception("Introduzca correctamente los datos del set 1º");
+			}
+			partido.setSet1(partidoDTO.getSet1Local() + "/" + partidoDTO.getSet1Visitante());
+		} else {
+			throw new Exception("Introduzca los datos del set 1º");
+		}
+		if (partidoDTO.getSet2Local() != null && partidoDTO.getSet2Visitante() != null) {
+			if (partidoDTO.getSet2Local() > partidoDTO.getSet2Visitante()) {
+				if (partidoDTO.getSet2Local().equals(25) && partidoDTO.getSet2Visitante() <= 23) {
+
+				} else if (partidoDTO.getSet2Local() > 25
+						&& (partidoDTO.getSet2Local() - partidoDTO.getSet2Visitante()) == 2) {
+
+				} else {
+					throw new Exception("Introduzca correctamente los datos del set 2º");
+				}
+				setsLocal++;
+			} else if (partidoDTO.getSet2Visitante() > partidoDTO.getSet2Local()) {
+				if (partidoDTO.getSet2Visitante().equals(25) && partidoDTO.getSet2Local() <= 23) {
+
+				} else if (partidoDTO.getSet2Visitante() > 25
+						&& (partidoDTO.getSet2Visitante() - partidoDTO.getSet2Local()) == 2) {
+
+				} else {
+					throw new Exception("Introduzca correctamente los datos del set 2º");
+				}
+				setsVisitante++;
+			} else {
+				throw new Exception("Introduzca correctamente los datos del set 2º");
+			}
+			partido.setSet2(partidoDTO.getSet2Local() + "/" + partidoDTO.getSet2Visitante());
+		} else {
+			throw new Exception("Introduzca los datos del set 2º");
+		}
+		if (partidoDTO.getSet3Local() != null && partidoDTO.getSet3Visitante() != null) {
+			if (partidoDTO.getSet3Local() > partidoDTO.getSet3Visitante()) {
+				if (partidoDTO.getSet3Local().equals(25) && partidoDTO.getSet3Visitante() <= 23) {
+
+				} else if (partidoDTO.getSet3Local() > 25
+						&& (partidoDTO.getSet3Local() - partidoDTO.getSet3Visitante()) == 2) {
+
+				} else {
+					throw new Exception("Introduzca correctamente los datos del set 3º");
+				}
+				setsLocal++;
+			} else if (partidoDTO.getSet3Visitante() > partidoDTO.getSet3Local()) {
+				if (partidoDTO.getSet3Visitante().equals(25) && partidoDTO.getSet3Local() <= 23) {
+
+				} else if (partidoDTO.getSet3Visitante() > 25
+						&& (partidoDTO.getSet3Visitante() - partidoDTO.getSet3Local()) == 2) {
+
+				} else {
+					throw new Exception("Introduzca correctamente los datos del set 3º");
+				}
+				setsVisitante++;
+			} else {
+				throw new Exception("Introduzca correctamente los datos del set 3º");
+			}
+			partido.setSet3(partidoDTO.getSet3Local() + "/" + partidoDTO.getSet3Visitante());
+		} else {
+			throw new Exception("Introduzca los datos del set 3º");
+		}
+
+		if (setsLocal < 3 && setsVisitante < 3) {
+			if (partidoDTO.getSet4Local() != null && partidoDTO.getSet4Visitante() != null) {
+				if (partidoDTO.getSet4Local() > partidoDTO.getSet4Visitante()) {
+					if (partidoDTO.getSet4Local().equals(25) && partidoDTO.getSet4Visitante() <= 23) {
+
+					} else if (partidoDTO.getSet4Local() > 25
+							&& (partidoDTO.getSet4Local() - partidoDTO.getSet4Visitante()) == 2) {
+
+					} else {
+						throw new Exception("Introduzca correctamente los datos del set 4º");
+					}
+					setsLocal++;
+				} else if (partidoDTO.getSet4Visitante() > partidoDTO.getSet4Local()) {
+					if (partidoDTO.getSet4Visitante().equals(25) && partidoDTO.getSet4Local() <= 23) {
+
+					} else if (partidoDTO.getSet4Visitante() > 25
+							&& (partidoDTO.getSet4Visitante() - partidoDTO.getSet4Local()) == 2) {
+
+					} else {
+						throw new Exception("Introduzca correctamente los datos del set 4º");
+					}
+					setsVisitante++;
+				} else {
+					throw new Exception("Introduzca correctamente los datos del set 4º");
+				}
+				partido.setSet4(partidoDTO.getSet4Local() + "/" + partidoDTO.getSet4Visitante());
+			} else {
+				throw new Exception("Introduzca los datos del set 4º");
+			}
+		}
+		if (setsLocal < 3 && setsVisitante < 3) {
+			if (partidoDTO.getSet5Local() != null && partidoDTO.getSet5Visitante() != null) {
+				if (partidoDTO.getSet5Local() > partidoDTO.getSet5Visitante()) {
+					if (partidoDTO.getSet5Local().equals(15) && partidoDTO.getSet5Visitante() <= 13) {
+
+					} else if (partidoDTO.getSet5Local() > 15
+							&& (partidoDTO.getSet5Local() - partidoDTO.getSet5Visitante()) == 2) {
+
+					} else {
+						throw new Exception("Introduzca correctamente los datos del set 5º");
+					}
+					setsLocal++;
+				} else if (partidoDTO.getSet5Visitante() > partidoDTO.getSet5Local()) {
+					if (partidoDTO.getSet5Visitante().equals(15) && partidoDTO.getSet5Local() <= 13) {
+
+					} else if (partidoDTO.getSet5Visitante() > 15
+							&& (partidoDTO.getSet5Visitante() - partidoDTO.getSet5Local()) == 2) {
+
+					} else {
+						throw new Exception("Introduzca correctamente los datos del set 5º");
+					}
+					setsVisitante++;
+				} else {
+					throw new Exception("Introduzca correctamente los datos del set 5º");
+				}
+				partido.setSet5(partidoDTO.getSet5Local() + "/" + partidoDTO.getSet5Visitante());
+			} else {
+				throw new Exception("Introduzca los datos del set 5º");
+			}
+		}
+
+		if (partidoDTO.getResultadoLocal() != null && partidoDTO.getResultadoVisitante() != null) {
+			if (partidoDTO.getResultadoLocal() == setsLocal && partidoDTO.getResultadoVisitante() == setsVisitante) {
+
+			} else {
+				throw new Exception("No corresponde el resultado final con los datos introducidos");
+			}
+		} else {
+			throw new Exception("Introduzca el resultado final");
+		}
+
+		partido.setResultado(partidoDTO.getResultadoLocal() + "-" + partidoDTO.getResultadoVisitante());
+
+		return partidoDAO.save(partido);
+
+	}
+
 	public void guardarPartidosArbitros(JornadaDTO jornadaDTO) {
-		if(!CollectionUtils.isEmpty(jornadaDTO.getListaPartidoDTO())) {
+		if (!CollectionUtils.isEmpty(jornadaDTO.getListaPartidoDTO())) {
 			for (PartidoDTO partidoDTO : jornadaDTO.getListaPartidoDTO()) {
-				Partido partido=partidoDAO.findByNumeroPartido(partidoDTO.getNumeroPartido());
-				if(partidoDTO.getIdArbitro()!=null) {
+				Partido partido = partidoDAO.findByNumeroPartido(partidoDTO.getNumeroPartido());
+				if (partidoDTO.getIdArbitro() != null) {
 					partido.setIdArbitro(partidoDTO.getIdArbitro());
 				} else {
 					partido.setIdArbitro(0L);
@@ -55,14 +221,14 @@ public class PartidoService {
 			}
 		}
 	}
-	
+
 	public void deleteAll() {
 		partidoDAO.deleteAll();
 	}
-	
-	//Me interesa hacer un GetAllPartidosByID ***** **** ****
-	
-	//Devuelve todos los partidos
+
+	// Me interesa hacer un GetAllPartidosByID ***** **** ****
+
+	// Devuelve todos los partidos
 	public List<Partido> getAllPartidos() {
 
 		// DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -77,19 +243,19 @@ public class PartidoService {
 				// equipo.setFechaAltaFormateada(strDate);
 			}
 		}
-		
+
 		return listaPartidos;
 	}
-	
-	public List<PartidoArbitroDTO> getListaPartidoArbitroDTOByIdArbitro(Long idArbitro){
-		
-		List<PartidoArbitroDTO> result=new ArrayList<PartidoArbitroDTO>();
-		
-		List<Partido> listaPartido=partidoDAO.findByIdArbitro(idArbitro);
-		
-		if(!CollectionUtils.isEmpty(listaPartido)) {
+
+	public List<PartidoArbitroDTO> getListaPartidoArbitroDTOByIdArbitro(Long idArbitro) {
+
+		List<PartidoArbitroDTO> result = new ArrayList<PartidoArbitroDTO>();
+
+		List<Partido> listaPartido = partidoDAO.findByIdArbitro(idArbitro);
+
+		if (!CollectionUtils.isEmpty(listaPartido)) {
 			for (Partido partido : listaPartido) {
-				PartidoArbitroDTO partidoArbitroDTO=new PartidoArbitroDTO();
+				PartidoArbitroDTO partidoArbitroDTO = new PartidoArbitroDTO();
 				partidoArbitroDTO.setEquipoLocal(partido.getEquipoLocal());
 				partidoArbitroDTO.setEquipoVisitante(partido.getEquipoVisitante());
 				partidoArbitroDTO.setNumeroPartido(partido.getNumeroPartido());
@@ -103,17 +269,17 @@ public class PartidoService {
 				result.add(partidoArbitroDTO);
 			}
 		}
-		
+
 		return result;
 	}
-	
-	public Partido getPartidoById(Long id) { //Devuelve partido a través del ID
-		
-		Partido partido=partidoDAO.findOne(id);
-		
+
+	public Partido getPartidoById(Long id) { // Devuelve partido a través del ID
+
+		Partido partido = partidoDAO.findOne(id);
+
 		return partido;
 	}
-	
+
 	public void deleteJornada(Long id) {
 		partidoDAO.delete(id);
 	}
