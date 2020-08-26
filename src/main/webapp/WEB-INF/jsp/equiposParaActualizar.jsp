@@ -4,11 +4,10 @@
 <html lang="en">
 <head>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
- integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
 <link rel="stylesheet" type="text/css"
-	href="/css/main.css" />
+	href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
 
 </head>
 <body>
@@ -43,14 +42,31 @@
 </div>
 
 </body>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script
+	src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript"
+	src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<!-- <script -->
+<!-- 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 <script type="text/javascript"
 	src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </html>
 <script type="text/javascript">
 	$('#listaNavegadorAdministrador').addClass("activeVerde")
-
+	var tablaEquipos = $('#tablaEquipos').DataTable({"paging" : true, "responsive" : true,"pageLength" : 5,
+		"lengthChange": false,"info": false,"ordering":false,"columns": [
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false }
+		  ],"language": {
+	            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+	        }});
 	function getEquipos() {
 		$.ajax({
 			url : '/admin/getEquiposActualizar?token='+$('#token').val(),
@@ -58,19 +74,26 @@
 			success : function(response) { //response manda una tabla con equipos
 
 				for (var i = 0; i < response.length; i++) {
-					$('#tablaEquipos tbody').append(
-							'<tr id="equipo'+response[i].id+'">' + '<td>'
-									+ response[i].nombreEquipo + '</td>'
-									+ '<td>' + response[i].localidad + '</td>'
-									+ '<td>' + response[i].provincia + '</td>'
-									+ '<td>' + response[i].direccion + '</td>'
-									+ '<td>' + response[i].pabellon + '</td>'
-									+ '<td>' + response[i].email + '</td>'
-									+ '<td>' + response[i].movil + '</td>'
-									+ '<td>' + response[i].primerEntrenador + '</td>'
-									+ '<td><button type="button" onclick="editarEquipo(\''+response[i].id+'\')" '
-									+'  class="btn btn-info btn-sm">Ver detalles</button></td>'
-									+ '</tr>')
+					var rowNode = tablaEquipos
+				    .row.add( [ response[i].nombreEquipo, response[i].localidad, 
+				    	response[i].provincia,response[i].direccion,response[i].pabellon,response[i].email,response[i].movil,
+				    	response[i].primerEntrenador,'<button type="button" onclick="editarEquipo(\''+response[i].id+'\')" '
+						+'  class="btn btn-info btn-sm">Ver detalles</button>'] )
+				    .draw()
+				    .node();
+// 					$('#tablaEquipos tbody').append(
+// 							'<tr id="equipo'+response[i].id+'">' + '<td>'
+// 									+ response[i].nombreEquipo + '</td>'
+// 									+ '<td>' + response[i].localidad + '</td>'
+// 									+ '<td>' + response[i].provincia + '</td>'
+// 									+ '<td>' + response[i].direccion + '</td>'
+// 									+ '<td>' + response[i].pabellon + '</td>'
+// 									+ '<td>' + response[i].email + '</td>'
+// 									+ '<td>' + response[i].movil + '</td>'
+// 									+ '<td>' + response[i].primerEntrenador + '</td>'
+// 									+ '<td><button type="button" onclick="editarEquipo(\''+response[i].id+'\')" '
+// 									+'  class="btn btn-info btn-sm">Ver detalles</button></td>'
+// 									+ '</tr>')
 				}
 // 
 			},

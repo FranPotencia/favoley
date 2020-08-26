@@ -280,7 +280,6 @@
 		  ],"language": {
 	            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
 	        }});
-
 	function getPartidosArbitro() {
 		$
 				.ajax({
@@ -476,7 +475,7 @@
 					$('#localidad').val(response.localidad);
 					$('#provincia').val(response.provincia);
 					$('#licencia').val(response.licencia);
-					$('#fechaNacimiento').val(response.fechaNacimiento);
+					$('#fechaNacimiento').val(response.fechaNacimientoFormateada);
 					$('#delegacion').val(response.delegacion);
 					$('#email').val(response.email);
 					$('#movil').val(response.movil);

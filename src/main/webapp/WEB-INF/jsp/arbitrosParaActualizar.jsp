@@ -4,11 +4,11 @@
 <html lang="en">
 <head>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
- integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
 <link rel="stylesheet" type="text/css"
-	href="/css/main.css" />
+	href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
 
 </head>
 <body>
@@ -41,15 +41,30 @@
 </div>
 
 </body>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script
+	src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript"
+	src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<!-- <script -->
+<!-- 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 <script type="text/javascript"
 	src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </html>
 
 <script type="text/javascript">
 	$('#listaNavegadorAdministrador').addClass("activeVerde")
-
+	var tablaArbitros = $('#tablaArbitros').DataTable({"paging" : true, "responsive" : true,"pageLength" : 5,
+		"lengthChange": false,"info": false,"ordering":false,"columns": [
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false }
+		  ],"language": {
+	            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+	        }});
 	function getArbitros() {
 		$.ajax({
 			url : '/admin/getArbitrosActualizar?token='+$('#token').val(),
@@ -57,17 +72,13 @@
 			success : function(response) { //response manda una tabla con equipos
 
 				for (var i = 0; i < response.length; i++) {
-					$('#tablaArbitros tbody').append(
-							'<tr id="arbitro'+response[i].id+'">' + '<td>'
-									+ response[i].nombre + '</td>'
-									+ '<td>' + response[i].apellidos + '</td>'
-									+ '<td>' + response[i].delegacion + '</td>'
-									+ '<td>' + response[i].licencia + '</td>'
-									+ '<td>' + response[i].numeroLicencia + '</td>'
-									+ '<td>' + response[i].email + '</td>'
-									+ '<td><button type="button" onclick="editarArbitro(\''+response[i].id+'\')" '
-									+'  class="btn btn-info btn-sm">Ver detalles</button></td>'
-									+ '</tr>')
+					var rowNode = tablaArbitros
+				    .row.add( [ response[i].nombre, response[i].apellidos, 
+				    	response[i].delegacion,response[i].licencia,response[i].numeroLicencia,response[i].email,
+				    	'<button type="button" onclick="editarArbitro(\''+response[i].id+'\')" '
+						+'  class="btn btn-info btn-sm">Ver detalles</button>'] )
+				    .draw()
+				    .node();
 				}
 // 
 			},

@@ -5,6 +5,8 @@
 <head>
 <link rel="stylesheet" type="text/css"
 	href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
 
 </head>
 <body>
@@ -71,11 +73,6 @@
 					type="text" class="form-control input-sm" id="primerEntrenador"
 					placeholder="Introduzca el nombre del 1º Entrenador">
 			</div>
-			<div class="col-xs-6">
-				<label for="escudo">Escudo</label> <input
-					type="file" class="form-control input-sm" id="escudo"
-					placeholder="Introduzca la foto del escudo">
-			</div>
 		</div>
 		<br>
 		<h2>Jugadores</h2>
@@ -109,8 +106,12 @@
 	</div>
 </body>
 
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script
+	src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript"
+	src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<!-- <script -->
+<!-- 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 <script type="text/javascript"
 	src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </html>
@@ -138,15 +139,23 @@
 
 	}
 	
+	var tablaJugadores = $('#tablaJugadores').DataTable({"paging" : false, "responsive" : true,"pageLength" : 5,
+		"lengthChange": false,"info": false,"ordering":false,"columns": [
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false, "width":"20%" }
+		  ],"language": {
+	            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+	        }});
+	
 	//Jugadores ya existentes
 	function addJugadorReal(response) {
-		$('#tablaJugadores tbody').append(
-						'<tr>'
-						+ '<td>'+response.nombre+'</td>'
-						+ '<td>'+response.apellidos+'</td>'
-						+ '<td>'+response.dni+'</td>'
-						+ '<td>'+response.fechaNacimientoFormateada+'</td>'
-						+ '</tr>')
+		var rowNode = tablaJugadores
+	    .row.add( [ response.nombre, response.apellidos, 
+	    	response.dni,response.fechaNacimientoFormateada ] )
+	    .draw()
+	    .node();
 	}
 	
 
@@ -165,7 +174,6 @@
 					$('#email').val(response.email);
 					$('#movil').val(response.movil);
 					$('#primerEntrenador').val(response.primerEntrenador);
-					$('#escudo').val(response.escudo);
 					
 					//Cuando muestro un equipo, añado a la vista todos los jugadores que pertenecen a un equipo, llamando a la función addJugadorReal
 					for (var i = 0; i < response.jugadores.length; i++) {

@@ -34,7 +34,7 @@
 			</div>
 			<div class="col-xs-3">
 				<label for="fechaNacimiento">Fecha de Nacimiento</label> <input
-					id="fechaNacimiento'" class="form-control input-sm" type="date">
+					id="fechaNacimiento" class="form-control input-sm" type="date">
 			</div>
 		</div>
 		<div class="row form-group">
@@ -158,7 +158,7 @@
 					$('#localidad').val(response.localidad);
 					$('#provincia').val(response.provincia);
 					$('#licencia').val(response.licencia);
-					$('#fechaNacimiento').val(response.fechaNacimiento);
+					$('#fechaNacimiento').val(response.fechaNacimientoFormateada);
 					$('#delegacion').val(response.delegacion);
 					$('#email').val(response.email);
 					$('#movil').val(response.movil);

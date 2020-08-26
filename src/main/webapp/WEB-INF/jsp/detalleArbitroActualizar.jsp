@@ -254,7 +254,7 @@
 					$('#localidad').val(response.localidad);
 					$('#provincia').val(response.provincia);
 					$('#licencia').val(response.licencia);
-					$('#fechaNacimiento').val(response.fechaNacimiento);
+					$('#fechaNacimiento').val(response.fechaNacimientoFormateada);
 					$('#delegacion').val(response.delegacion);
 					$('#email').val(response.email);
 					$('#movil').val(response.movil);
@@ -280,7 +280,7 @@
 					$('#localidadActualizado').val(response.localidad);
 					$('#provinciaActualizado').val(response.provincia);
 					$('#licenciaActualizado').val(response.licencia);
-					$('#fechaNacimientoActualizado').val(response.fechaNacimiento);
+					$('#fechaNacimientoActualizado').val(response.fechaNacimientoFormateada);
 					$('#delegacionActualizado').val(response.delegacion);
 					$('#emailActualizado').val(response.email);
 					$('#movilActualizado').val(response.movil);

@@ -31,16 +31,13 @@ public class ArbitroService {
 	
 	public List<Arbitro> getAllArbitros() {
 
-		// DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
 		List<Arbitro> listaArbitros = new ArrayList<Arbitro>();
 
 		listaArbitros = arbitroDAO.findAll();
 
 		if (!CollectionUtils.isEmpty(listaArbitros)) {
 			for (Arbitro arbitro : listaArbitros) {
-				// String strDate = dateFormat.format(equipo.getFechaAlta());
-				// equipo.setFechaAltaFormateada(strDate);
+//				arbitro.setFechaNacimientoFormateada(dateFormat.format(arbitro.getFechaNacimiento())); //Si no meto ninguna fecha, esta línea devuelve un error
 			}
 		}
 		
@@ -51,6 +48,8 @@ public class ArbitroService {
 	public Arbitro getArbitroById(Long id) { //Devuelve arbitro a través del ID
 		
 		Arbitro arbitro=arbitroDAO.findOne(id);
+		
+		arbitro.setFechaNacimientoFormateada(dateFormat.format(arbitro.getFechaNacimiento()));
 		
 		return arbitro;
 	}

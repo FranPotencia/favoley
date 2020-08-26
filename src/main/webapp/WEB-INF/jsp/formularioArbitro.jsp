@@ -33,7 +33,7 @@
 			</div>
 			<div class="col-xs-3">
 				<label for="fechaNacimiento">Fecha de Nacimiento</label> <input
-					id="fechaNacimiento'" class="form-control input-sm" type="date">
+					id="fechaNacimiento" class="form-control input-sm" type="date">
 			</div>
 		</div>
 		<div class="row form-group">
@@ -45,7 +45,7 @@
 			<div class="col-xs-3">
 				<label for="provincia">Provincia</label> <select id="provincia"
 					class="form-control input-sm">
-					<option>Elija una opción...</option>
+					<option></option>
 					<option value="Huelva">Huelva</option>
 					<option value="Sevilla">Sevilla</option>
 					<option value="Almería">Almería</option>
@@ -72,7 +72,7 @@
 			<div class="col-xs-3">
 				<label for="delegacion">Delegación</label> <select id="delegacion"
 					class="form-control input-sm">
-					<option>Elija una opción...</option>
+					<option></option>
 					<option value="Huelva">Huelva</option>
 					<option value="Sevilla">Sevilla</option>
 					<option value="Almería">Almería</option>
@@ -86,7 +86,7 @@
 			<div class="col-xs-3">
 				<label for="licencia">Licencia</label> <select id="licencia"
 					class="form-control input-sm">
-					<option>Elija una opción...</option>
+					<option></option>
 					<option value="Anotador">Anotador</option>
 					<option value="TerritorialB">Territorial B</option>
 					<option value="TerritorialA">Territorial A</option>
@@ -122,6 +122,51 @@
 	
 	function postArbitro() {
 
+		
+			if($('#nombre').val()==''){
+				alert('Falta nombre');
+				return ;
+			}
+			if($('#apellidos').val()==''){
+				alert('Falta apellidos');
+				return ;
+			}
+			if($('#dni').val()==''){
+				alert('Falta dni');
+				return ;
+			}
+			if($('#fechaNacimiento').val()==''){
+				alert('Falta fecha de nacimiento');
+				return ;
+			}
+			if($('#localidad').val()==''){
+				alert('Falta localidad');
+				return ;
+			}
+			if($('#provincia').val()==''){
+				alert('Falta provincia');
+				return ;
+			}
+			if($('#email').val()==''){
+				alert('Falta email');
+				return ;
+			}
+			if($('#movil').val()==''){
+				alert('Falta movil');
+				return ;
+			}
+			if($('#delegacion').val()==''){
+				alert('Falta delegacion');
+				return ;
+			}
+			if($('#licencia').val()==''){
+				alert('Falta licencia');
+				return ;
+			}
+			if($('#numeroLicencia').val()==''){
+				alert('Falta numeroLicencia');
+				return ;
+			}
 			var arbitro = {
 				"nombre" : $('#nombre').val(),
 				"apellidos" : $('#apellidos').val(),

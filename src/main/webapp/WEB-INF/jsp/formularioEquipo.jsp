@@ -167,6 +167,8 @@
 		var jugadores = []; //Creo una tabla en la que voy a introducir tanto los jugadores antiguos como los nuevos(en este caso los antiguos)
 		for (var i = 0; i < filasReales.length; i++) {
 			var item = filasReales[i].id.split('jugadorReal')[1]; //Extraigo el id de su base de datos, para que se actualicen los posibles cambios "Francisco Barbosa Marín" .split(" ") ["Francisco","Barbosa","MArín"]
+			
+			//Justo aqui vever cada campo
 			var jugador = {
 				"id" : item,
 				"nombre" : $('#nombreReal' + item).val(),
@@ -188,6 +190,8 @@
 			//			Esto es igual que la línea siguiente:
 
 			var item = filasNuevas[i].id.split('jugador')[1];
+			
+			// Aqui igual
 			var jugador = {
 				"id" : null,
 				"nombre" : $('#nombre' + item).val(),
@@ -202,7 +206,7 @@
 		if ($('#idEquipo').val() != '') { //Si el equipo no ha sido creado, se le creará un ID cuando sea introducido en la base de datos, si el equipo es actualizado, pillaremos el ID del principio, para que su modificación sea correcta.
 			idEquipo = $('#idEquipo').val();
 		}
-
+		// comprobar todos los campos de equipo menos idEquipo
 		var equipo = {
 			"id" : idEquipo,
 			"nombreEquipo" : $('#nombreEquipo').val(),

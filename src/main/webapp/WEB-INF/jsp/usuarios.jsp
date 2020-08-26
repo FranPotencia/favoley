@@ -5,6 +5,8 @@
 <head>
 <link rel="stylesheet" type="text/css"
 	href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
 
 </head>
 <body>
@@ -49,7 +51,11 @@
 			<div id="divFechaJornadas" class="col-xs-2">
 				
 			</div>
+		</div>
+		<div class="row form-group">
 			<div id="divTablaJornada" class="col-xs-12"></div>
+		</div>
+		<div class="row form-group">
 			<div class="col-xs-1">
 				<button class="btn btn-primary btn-sm" id="generar">Genera
 					jornadas</button>
@@ -59,9 +65,28 @@
 					style="float: right;" class="btn btn-primary btn-sm">Guardar Jornada</button>
 			</div>
 		</div>
-
+		<div class="row form-group"></div>
 		<h2>Gestión de usuarios</h2>
+		
+		<div class="row form-group ">
+			<div class="col-xs-12">
+				<table id="tablaUsuarios" class="table">
+					<thead>
+						<tr>
+							<th>Nombre</th>
+							<th>Tipo</th>
+							<th>Acceso</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
 
+					</tbody>
+
+				</table>
+			</div>
+		</div>
+		
 		<div class="row form-group">
 			<div class="col-xs-3">
 				<label for="nombreEquipo">Usuario</label> <input type="text"
@@ -84,36 +109,23 @@
 					class="form-control input-sm" id="idAcceso" placeholder="idAcceso">
 			</div>
 		</div>
+		
 		<div class="row form-group ">
 			<div class="col-xs-12">
 				<button type="button" onclick="postUsuario()" style="float: right;"
 					class="btn btn-primary btn-sm">Guardar</button>
 			</div>
 		</div>
-		<div class="row form-group ">
-			<div class="col-xs-12">
-				<table id="tablaUsuarios" class="table">
-					<thead>
-						<tr>
-							<th>Nombre</th>
-							<th>Tipo</th>
-							<th>Acceso</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-
-					</tbody>
-
-				</table>
-			</div>
-		</div>
 
 	</div>
 </body>
 
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script
+	src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript"
+	src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<!-- <script -->
+<!-- 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 <script type="text/javascript"
 	src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </html>
@@ -135,6 +147,17 @@
 		});
 	})
 
+	var tablaUsuarios=$('#tablaUsuarios').DataTable({"paging" : true, "responsive" : true,"pageLength" : 5,
+								"lengthChange": false,"info": false,"searching":true,"ordering": true,"columns": [
+								    { "orderable": true },
+								    { "orderable": false },
+								    { "orderable": false },
+								    { "orderable": false }
+								   
+								  ],"language": {
+							            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+							        }});
+	
 	function guardarJornada() {
 
 		if($('#divTablaJornada table:visible tbody tr')!==undefined){
@@ -209,30 +232,20 @@
 	}
 
 	function addUsuario(response) {
-		$('#tablaUsuarios tbody')
-				.append(
-						'<tr>'
-								+ '<td>'
-								+ response.username
-								+ '</td>'
-								+ '<td>'
-								+ response.tipo
-								+ '</td>'
-								+ '<td>'
-								+ response.idAcceso
-								+ '</td>'
-								+ '<td><button type="button" onclick="deleteUsuario(\''
-								+ response.username
-								+ '\',this)" '
-								+ ' class="btn btn-danger btn-sm">Eliminar</button></td>'
-								+ '</tr>')
+		var rowNode = tablaUsuarios
+	    .row.add( [ response.username, response.tipo, 
+	    	response.idAcceso,'<button type="button" onclick="deleteUsuario(\''
+				+ response.username + '\',this)" class="btn btn-danger btn-sm">Eliminar</button>'] )
+	    .draw()
+	    .node();
 	}
 
 	function deleteUsuario(id, botonCelda) {
 		$.ajax({
-			url : '/admin/deleteUsuario/' + id + '?token=' + $('#token').val(),
+			url : '/admin/deleteUsuario/?id=' + id + '&token=' + $('#token').val(),
 			method : 'DELETE',
 			success : function(response) {
+				alert('Usuario eliminado')
 				$(botonCelda).parent().parent().remove();
 			},
 			error : function(response) {
@@ -271,6 +284,7 @@
 								+ response[i].apellidos + '</option>';
 					}
 				}
+				getJornadas();
 			},
 			error : function() {
 			}
@@ -302,6 +316,16 @@
 											+ '<th>Árbitro</th>' + '</tr>'
 											+ '</thead>' + '<tbody>'
 											+ '</tbody>' + '</table>');
+							var tablaJornada=$('#tablaPartidosJornada'+response[0].id).DataTable({"paging" : false, "responsive" : true,
+								"lengthChange": false,"info": false,"searching":false,"ordering": false,"columns": [
+								    { "orderable": false },
+								    { "orderable": false },
+								    { "orderable": false },
+								    { "orderable": false }
+								   
+								  ],"language": {
+							            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+							        }});
 							for (var j = 0; j < response[0].partidos.length; j++) {
 								var resultado;
 								if (response[0].partidos[j].equipoLocal == 'Descansa'
@@ -311,21 +335,11 @@
 									resultado = '<select class="form-control input-sm" id="arbitro'+response[0].partidos[j].numeroPartido+'">'
 											+ optionsArbitros + '</select>';
 								}
-
-								$(
-										'#tablaPartidosJornada'
-												+ response[0].id + ' tbody')
-										.append(
-												'<tr><td>'
-														+ response[0].partidos[j].numeroPartido
-														+ '</td>'
-														+ '<td>'
-														+ response[0].partidos[j].equipoLocal
-														+ '</td><td>'
-														+ response[0].partidos[j].equipoVisitante
-														+ '</td><td>'
-														+ resultado
-														+ '</td></tr>');
+								var rowNode = tablaJornada
+							    .row.add( [ response[0].partidos[j].numeroPartido, response[0].partidos[j].equipoLocal, 
+							    	response[0].partidos[j].equipoVisitante,resultado] )
+							    .draw()
+							    .node();
 								if(resultado!='-'){
 									$('#arbitro'+response[0].partidos[j].numeroPartido).val(response[0].partidos[j].idArbitro);
 								}
@@ -352,6 +366,16 @@
 													+ '<tbody>'
 													+ '</tbody>'
 													+ '</table>');
+							var tablaJornada=$('#tablaPartidosJornada'+response[i].id).DataTable({"paging" : false, "responsive" : true,
+								"lengthChange": false,"info": false,"searching":false,"ordering": false,"columns": [
+								    { "orderable": false },
+								    { "orderable": false },
+								    { "orderable": false },
+								    { "orderable": false }
+								   
+								  ],"language": {
+							            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+							        }});
 							for (var j = 0; j < response[i].partidos.length; j++) {
 								var resultado;
 								if (response[i].partidos[j].equipoLocal == 'Descansa'
@@ -361,21 +385,25 @@
 									resultado = '<select class="form-control input-sm" id="arbitro'+response[i].partidos[j].numeroPartido+'">'
 											+ optionsArbitros + '</select>';
 								}
-
-								$(
-										'#tablaPartidosJornada'
-												+ response[i].id + ' tbody')
-										.append(
-												'<tr><td>'
-														+ response[i].partidos[j].numeroPartido
-														+ '</td>'
-														+ '<td>'
-														+ response[i].partidos[j].equipoLocal
-														+ '</td><td>'
-														+ response[i].partidos[j].equipoVisitante
-														+ '</td><td>'
-														+ resultado
-														+ '</td></tr>');
+								var rowNode = tablaJornada
+							    .row.add( [ response[i].partidos[j].numeroPartido, response[i].partidos[j].equipoLocal, 
+							    	response[i].partidos[j].equipoVisitante,resultado] )
+							    .draw()
+							    .node();
+// 								$(
+// 										'#tablaPartidosJornada'
+// 												+ response[i].id + ' tbody')
+// 										.append(
+// 												'<tr><td>'
+// 														+ response[i].partidos[j].numeroPartido
+// 														+ '</td>'
+// 														+ '<td>'
+// 														+ response[i].partidos[j].equipoLocal
+// 														+ '</td><td>'
+// 														+ response[i].partidos[j].equipoVisitante
+// 														+ '</td><td>'
+// 														+ resultado
+// 														+ '</td></tr>');
 								if(resultado!='-'){
 									$('#arbitro'+response[i].partidos[j].numeroPartido).val(response[i].partidos[j].idArbitro);
 								}
@@ -395,6 +423,6 @@
 		$('#tablaPartidosJornada' + $(this).val()).show();
 	});
 	getArbitros();
-	getJornadas();
+	
 	getUsuarios();
 </script>

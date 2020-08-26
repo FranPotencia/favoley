@@ -146,10 +146,12 @@ public class PrivateRestController {
 	// ACTUALIZAR ÁRBITROS
 	// ------------------
 	@RequestMapping(value = "/peticionActualizarArbitro", method = RequestMethod.POST)
-	public ResponseEntity addArbitro(@Valid @RequestBody ArbitroActualizado arbitroActualizado,
+	public ResponseEntity actualizarArbitro(@Valid @RequestBody ArbitroActualizado arbitroActualizado,
 			@RequestParam(required = true, name = "token") String token) {
 		try {
 			if (tokenService.getTipoToken(token).equals("ARB")) {
+				String id=tokenService.getIdAccesoToken(token);
+				arbitroActualizado.setId(Long.parseLong(id));
 				arbitroActualizadoService.guardarArbitro(arbitroActualizado);
 				return new ResponseEntity(HttpStatus.OK);
 			} else {
@@ -304,8 +306,8 @@ public class PrivateRestController {
 		}
 	}
 
-	@RequestMapping(value = "/deleteUsuario/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity deleteUsuario(@PathVariable("id") String id,
+	@RequestMapping(value = "/deleteUsuario", method = RequestMethod.DELETE)
+	public ResponseEntity deleteUsuario(@RequestParam(required = true, name = "id")  String id,
 			@RequestParam(required = true, name = "token") String token) {
 		try {
 			if (tokenService.getTipoToken(token).equals("ALL")) {

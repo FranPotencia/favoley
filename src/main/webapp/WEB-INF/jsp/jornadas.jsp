@@ -5,6 +5,8 @@
 <head>
 <link rel="stylesheet" type="text/css"
 	href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css" />
 
 </head>
 <body>
@@ -24,9 +26,11 @@
 				<select class="form-control" id="listaJornadas">
 				</select>
 			</div>
-			<div id="divTablaJornada" class="col-xs-12">
-			
-			</div>
+		</div>
+		<div class="row form-group">
+			<div id="divTablaJornada" class="col-xs-12"></div>
+		</div>
+		<div class="row form-group">
 			<div id="divTablaClasificacion" class="col-xs-12">
 				<table id="tablaClasificacion" class="table">
 					<thead>
@@ -53,14 +57,32 @@
 
 </body>
 
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script
+	src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript"
+	src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<!-- <script -->
+<!-- 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
 <script type="text/javascript"
 	src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </html>
 <script type="text/javascript">
 	$('#listaNavegadorCompeticion').addClass("activeVerde"); //Para que en el navegador aparezca activo esta sección
 
+	var tablaClasificacion=$('#tablaClasificacion').DataTable({"paging" : false, "responsive" : true,
+		"lengthChange": false,"info": false,"searching":false,"ordering": false,"columns": [
+		    { "orderable": false,"width": "10%" },
+		    { "orderable": false,"width": "50%" },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false },
+		    { "orderable": false }
+		  ],"language": {
+	            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+	        }});
+	
 	function getClasificacion(){
 		$.ajax({
 			url : '/getClasificacion',
@@ -68,17 +90,12 @@
 			success : function(response) {
 				if (response != null && response.length > 0) {
 					for (var i = 0; i < response.length; i++) {
-						$('#tablaClasificacion tbody')
-								.append(
-										'<tr><td>' + response[i].posicion + '</td>'
-												+ '<td>' + response[i].nombre + '</td>'
-												+ '<td>' + response[i].partidosJugados + '</td>'
-												+ '<td>' + response[i].partidosGanados + '</td>'
-												+ '<td>' + response[i].partidosPerdidos + '</td>'
-												+ '<td>' + response[i].tanteosFavor + '</td>'
-												+ '<td>' + response[i].tanteosContra + '</td>'
-												+ '<td>' + response[i].puntos + '</td>'
-												+ '</tr>');
+						var rowNode = tablaClasificacion
+					    .row.add( [ response[i].posicion, response[i].nombre, response[i].partidosJugados,
+					    	response[i].partidosGanados,response[i].partidosPerdidos,response[i].tanteosFavor,
+					    	response[i].tanteosContra,response[i].puntos] )
+					    .draw()
+					    .node();
 					}
 				}
 			},
@@ -110,6 +127,17 @@
 											+ '<th>Resultado</th>' + '</tr>'
 											+ '</thead>' + '<tbody>'
 											+ '</tbody>' + '</table>');
+							var tablaJornada=$('#tablaPartidosJornada'+response[0].id).DataTable({"paging" : false, "responsive" : true,
+								"lengthChange": false,"info": false,"searching":false,"ordering": false,"columns": [
+								    { "orderable": false },
+								    { "orderable": false },
+								    { "orderable": false },
+								    { "orderable": false }
+								   
+								  ],"language": {
+							            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+							        }});
+							
 							for (var j = 0; j < response[0].partidos.length; j++) {
 								var resultado;
 								if (response[0].partidos[j].equipoLocal == 'Descansa'
@@ -119,21 +147,25 @@
 								} else {
 									resultado = response[0].partidos[j].resultado;
 								}
-
-								$(
-										'#tablaPartidosJornada'
-												+ response[0].id + ' tbody')
-										.append(
-												'<tr><td>'
-														+ response[0].partidos[j].numeroPartido
-														+ '</td>'
-														+ '<td>'
-														+ response[0].partidos[j].equipoLocal
-														+ '</td><td>'
-														+ response[0].partidos[j].equipoVisitante
-														+ '</td><td>'
-														+ resultado
-														+ '</td></tr>');
+								var rowNode = tablaJornada
+							    .row.add( [ response[0].partidos[j].numeroPartido, response[0].partidos[j].equipoLocal, 
+							    	response[0].partidos[j].equipoVisitante,resultado] )
+							    .draw()
+							    .node();
+// 								$(
+// 										'#tablaPartidosJornada'
+// 												+ response[0].id + ' tbody')
+// 										.append(
+// 												'<tr><td>'
+// 														+ response[0].partidos[j].numeroPartido
+// 														+ '</td>'
+// 														+ '<td>'
+// 														+ response[0].partidos[j].equipoLocal
+// 														+ '</td><td>'
+// 														+ response[0].partidos[j].equipoVisitante
+// 														+ '</td><td>'
+// 														+ resultado
+// 														+ '</td></tr>');
 							}
 						}
 						for (var i = 1; i < response.length; i++) {
@@ -155,6 +187,16 @@
 													+ '<tbody>'
 													+ '</tbody>'
 													+ '</table>');
+							var tablaJornada=$('#tablaPartidosJornada'+response[i].id).DataTable({"paging" : false, "responsive" : true,
+								"lengthChange": false,"info": false,"searching":false,"ordering": false,"columns": [
+								    { "orderable": false },
+								    { "orderable": false },
+								    { "orderable": false },
+								    { "orderable": false }
+								   
+								  ],"language": {
+							            "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+							        }});
 							for (var j = 0; j < response[i].partidos.length; j++) {
 								var resultado;
 								if (response[i].partidos[j].equipoLocal == 'Descansa'
@@ -164,21 +206,11 @@
 								} else {
 									resultado = response[i].partidos[j].resultado;
 								}
-
-								$(
-										'#tablaPartidosJornada'
-												+ response[i].id + ' tbody')
-										.append(
-												'<tr><td>'
-														+ response[i].partidos[j].numeroPartido
-														+ '</td>'
-														+ '<td>'
-														+ response[i].partidos[j].equipoLocal
-														+ '</td><td>'
-														+ response[i].partidos[j].equipoVisitante
-														+ '</td><td>'
-														+ resultado
-														+ '</td></tr>');
+								var rowNode = tablaJornada
+							    .row.add( [ response[i].partidos[j].numeroPartido, response[i].partidos[j].equipoLocal, 
+							    	response[i].partidos[j].equipoVisitante,resultado] )
+							    .draw()
+							    .node();
 							}
 						}
 					},
@@ -192,6 +224,7 @@
 		$('.classHidden').hide();
 		$('#tablaPartidosJornada' + $(this).val()).show();
 	});
+	
 	getJornadas();
 	getClasificacion();
 </script>

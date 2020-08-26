@@ -1,5 +1,7 @@
 package com.mkyong.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +22,8 @@ public class ArbitroActualizadoService {
 
 	@Autowired
 	private ArbitroActualizadoDAO arbitroActualizadoDAO;
-
-	// private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+	
+	private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 	public List<ArbitroActualizado> getAllArbitros() {
 
@@ -31,12 +33,11 @@ public class ArbitroActualizadoService {
 
 		listaArbitros = arbitroActualizadoDAO.findAll();
 
-		// if (!CollectionUtils.isEmpty(listaArbitros)) {
-		// for (ArbitroConfirmado arbitroConfirmado : listaArbitros) {
-		// String strDate = dateFormat.format(equipo.getFechaAlta());
-		// equipo.setFechaAltaFormateada(strDate);
-		// }
-		// }
+		if (!CollectionUtils.isEmpty(listaArbitros)) {
+			for (ArbitroActualizado arbitroActualizado : listaArbitros) {
+//				arbitroActualizado.setFechaNacimientoFormateada(dateFormat.format(arbitroActualizado.getFechaNacimiento()));
+			}
+		}
 
 		return listaArbitros;
 	}
@@ -58,6 +59,8 @@ public class ArbitroActualizadoService {
 
 		ArbitroActualizado arbitro = arbitroActualizadoDAO.findOne(id);
 
+		arbitro.setFechaNacimientoFormateada(dateFormat.format(arbitro.getFechaNacimiento()));
+		
 		return arbitro;
 	}
 

@@ -1,5 +1,7 @@
 package com.mkyong.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +21,8 @@ public class ArbitroConfirmadoService {
 	@Autowired
 	private ArbitroConfirmadoDAO arbitroConfirmadoDAO;
 
-	// private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
+	private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	
 	public List<ArbitroConfirmado> getAllArbitros() {
 
 		// DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -29,12 +31,11 @@ public class ArbitroConfirmadoService {
 
 		listaArbitros = arbitroConfirmadoDAO.findAll();
 
-		//if (!CollectionUtils.isEmpty(listaArbitros)) {
-			//for (ArbitroConfirmado arbitroConfirmado : listaArbitros) {
-				// String strDate = dateFormat.format(equipo.getFechaAlta());
-				// equipo.setFechaAltaFormateada(strDate);
-			//}
-		//}
+		if (!CollectionUtils.isEmpty(listaArbitros)) {
+			for (ArbitroConfirmado arbitroConfirmado : listaArbitros) {
+//				arbitroConfirmado.setFechaNacimientoFormateada(dateFormat.format(arbitroConfirmado.getFechaNacimiento()));
+			}
+		}
 
 		return listaArbitros;
 	}
@@ -55,6 +56,8 @@ public class ArbitroConfirmadoService {
     public ArbitroConfirmado getArbitroById(Long id) { //Devuelve arbitro a través del ID
 		
 		ArbitroConfirmado arbitro=arbitroConfirmadoDAO.findOne(id);
+		
+		arbitro.setFechaNacimientoFormateada(dateFormat.format(arbitro.getFechaNacimiento()));
 		
 		return arbitro;
 	}
